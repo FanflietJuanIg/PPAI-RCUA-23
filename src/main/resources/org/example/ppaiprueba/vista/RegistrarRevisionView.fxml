@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.ppaiprueba.vista.RegistrarRevisionFController"
+      spacing="10" alignment="TOP_CENTER" style="-fx-padding: 20">
+
+    <Button fx:id="btnIniciarRevision" text="Iniciar Revisión" onAction="#onIniciarRevision" />
+
+    <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" />
+
+    <Button fx:id="btnVisualizarMapa" text="Visualizar Mapa" onAction="#onVerMapa" visible="false" />
+
+    <VBox fx:id="formularioEdicion" spacing="5" visible="false">
+        <Label text="Magnitud" />
+        <TextField fx:id="txtMagnitud" />
+        <Label text="Alcance" />
+        <TextField fx:id="txtAlcance" />
+        <Label text="Origen" />
+        <TextField fx:id="txtOrigen" />
+        <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
+    </VBox>
+
+    <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
+        <Button text="Confirmar" onAction="#onConfirmar" />
+        <Button text="Rechazar" onAction="#onRechazar" />
+        <Button text="Derivar" onAction="#onDerivar" />
+    </HBox>
+</VBox>
