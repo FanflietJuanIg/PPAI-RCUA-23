@@ -6,6 +6,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.example.ppaiprueba.control.CUController;
 import org.example.ppaiprueba.modelo.EventoSismico;
+import org.example.ppaiprueba.modelo.Estado;
+import org.example.ppaiprueba.modelo.MagnitudRichter;
+import org.example.ppaiprueba.modelo.AlcanceSismo;
+import org.example.ppaiprueba.modelo.OrigenDeGeneracion;
+import org.example.ppaiprueba.modelo.ClasificacionSismo;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -25,9 +31,15 @@ public class RegistrarRevisionFController {
     @FXML
     public void initialize() {
         // Cargar eventos simulados
+        Estado pendiente = new Estado("Pendiente Revision");
+        MagnitudRichter magnitud = new MagnitudRichter("Alta", 3.4);
+        OrigenDeGeneracion origen = new OrigenDeGeneracion("Zona Norte", "Cordoba");
+        ClasificacionSismo clasificacion= new ClasificacionSismo(20, 40, "Maria");
+        AlcanceSismo alcance = new AlcanceSismo("Alto", "Mucho");
+
         List<EventoSismico> eventos = List.of(
-                new EventoSismico(5.0, "Alta", "Tectónico", "Pendiente"),
-                new EventoSismico(4.3, "Media", "Volcánico", "Pendiente")
+                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(3), pendiente),
+                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(6), pendiente)
         );
         cuController = new CUController(eventos);
 
