@@ -11,6 +11,10 @@ public class Estado {
         return nombre;
     }
 
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
     public boolean esAutodetectado() {
         return nombre.equalsIgnoreCase("Autodetectado");
     }

@@ -2,9 +2,9 @@ package org.example.ppaiprueba.modelo;
 
 public class MagnitudRichter {
     private String descripcionMagnitud;
-    private double numero;
+    private Double numero;
 
-    public MagnitudRichter(String descripcionMagnitud, double numero) {
+    public MagnitudRichter(String descripcionMagnitud, Double numero) {
         this.descripcionMagnitud = descripcionMagnitud;
         this.numero = numero;
     }
@@ -13,7 +13,7 @@ public class MagnitudRichter {
         return descripcionMagnitud;
     }
 
-    public double getNumero() {
+    public Double getNumero() {
         return numero;
     }
 

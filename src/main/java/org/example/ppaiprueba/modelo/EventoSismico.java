@@ -3,6 +3,7 @@ package org.example.ppaiprueba.modelo;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 import org.example.ppaiprueba.modelo.Estado;
 
 public class EventoSismico {
@@ -12,15 +13,24 @@ public class EventoSismico {
     private ClasificacionSismo clasificacion;
     private LocalDateTime fechaHoraOcurrencia;
     private Estado estadoActual;
+    private String latitudEpicentro;
+    private String longitudEpicentro;
+    private String latitudHipocentro;
+    private String longitudHipocentro;
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
-    public EventoSismico(MagnitudRichter magnitud, AlcanceSismo alcance, OrigenDeGeneracion origen, ClasificacionSismo clasificacion, LocalDateTime fechaHoraOcurrencia, Estado estadoInicial) {
+    public EventoSismico(MagnitudRichter magnitud, AlcanceSismo alcance, OrigenDeGeneracion origen, ClasificacionSismo clasificacion, LocalDateTime fechaHoraOcurrencia, Estado estadoInicial,
+    String latitudEpicentro, String longitudEpicentro, String latitudHipocentro, String longitudHipocentro) {
         this.magnitud = magnitud;
         this.alcance = alcance;
         this.origen = origen;
         this.clasificacion = clasificacion;
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.estadoActual = estadoInicial;
+        this.latitudEpicentro = latitudEpicentro;
+        this.longitudEpicentro = longitudEpicentro;
+        this.latitudHipocentro = latitudHipocentro;
+        this.longitudHipocentro = longitudHipocentro;
     }
 // get y set a otros objetos cambiarlos
     /*
@@ -74,7 +84,35 @@ public class EventoSismico {
         this.responsableRevision = responsableRevision;
     }
 */
+    public Object[] obtenerMagnitud(){
+        Object[] vector = new Object[2];
+        vector[0] = magnitud.getDescripcionMagnitud();
+        vector[1] = magnitud.getNumero();
+        return vector;
+    }
+    public String getLatitudEpicentro(){
+        return latitudEpicentro;
+    }
 
+    public String getLongitudEpicentro(){
+        return  longitudEpicentro;
+    }
+
+    public String getLatitudHipocentro(){
+        return  latitudHipocentro;
+    }
+
+    public String getLongitudHipocentro(){
+        return  longitudHipocentro;
+    }
+
+    public void setEstadoActual(Estado estadoActual){
+        this.estadoActual = estadoActual;
+    }
+
+    public LocalDateTime getFechaHoraOcurrencia() {
+        return fechaHoraOcurrencia;
+    }
 
     // metodos
     public boolean esAutodetectado() {

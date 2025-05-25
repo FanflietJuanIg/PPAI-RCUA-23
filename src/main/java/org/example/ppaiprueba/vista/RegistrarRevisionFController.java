@@ -38,7 +38,7 @@ public class RegistrarRevisionFController {
         AlcanceSismo alcance = new AlcanceSismo("Alto", "Mucho");
 
         List<EventoSismico> eventos = List.of(
-                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(3), pendiente),
+                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(3), pendiente, "20º"),
                 new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(6), pendiente)
         );
         cuController = new CUController(eventos);

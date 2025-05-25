@@ -3,7 +3,10 @@ package org.example.ppaiprueba.control;
 
 import org.example.ppaiprueba.modelo.EventoSismico;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import org.example.ppaiprueba.modelo.Estado;
 
 public class CUController {
     private List<EventoSismico> eventosPendientes;
@@ -14,8 +17,24 @@ public class CUController {
 
     public List<EventoSismico> obtenerEventosPendientes() {
         return eventosPendientes.stream()
-                .filter(e -> e.getEstado().equals("Pendiente"))
+                .filter(EventoSismico::esPendienteRevision)
                 .toList();
+    }
+
+    public List<Map<String, Object>> OrdenarEventos(){
+        return obtenerEventosPendientes().stream()
+                .sorted(Comparator.comparing(EventoSismico::getFechaHoraOcurrencia).reversed())
+                .map(e -> {
+                    Map<String, Object> mapa = new HashMap<>();
+                    mapa.put("magnitud", e.obtenerMagnitud());
+                    mapa.put("fecha y hora ocurrencia", e.getFechaHoraOcurrencia());
+                    mapa.put("Latitud Hipocentro", e.getLatitudHipocentro());
+                    mapa.put("Longitud Hipocentro", e.getLongitudHipocentro());
+                    mapa.put("Latitud Epicentro", e.getLatitudEpicentro());
+                    mapa.put("Longitud Epicentro", e.getLongitudEpicentro());
+                    return mapa;
+                })
+                .collect(Collectors.toList());
     }
 
     public void confirmarEvento(EventoSismico evento, String analista) {
