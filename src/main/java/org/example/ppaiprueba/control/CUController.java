@@ -20,7 +20,8 @@ public class CUController {
                 .filter(EventoSismico::esPendienteRevision)
                 .toList();
     }
-
+// esto es un map de los datos que se le van a pasar a la pantalla, no todos los datos del evento deben ser visualizados
+// uso map para no tener que crear otra clase lo cual causaria inconsistencia con el modelo
     public List<Map<String, Object>> OrdenarEventos(){
         return obtenerEventosPendientes().stream()
                 .sorted(Comparator.comparing(EventoSismico::getFechaHoraOcurrencia).reversed())
