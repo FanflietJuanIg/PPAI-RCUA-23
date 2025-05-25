@@ -17,6 +17,7 @@ public class EventoSismico {
     private String longitudEpicentro;
     private String latitudHipocentro;
     private String longitudHipocentro;
+    //private Empleado empleado;
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
     public EventoSismico(MagnitudRichter magnitud, AlcanceSismo alcance, OrigenDeGeneracion origen, ClasificacionSismo clasificacion, LocalDateTime fechaHoraOcurrencia, Estado estadoInicial,
