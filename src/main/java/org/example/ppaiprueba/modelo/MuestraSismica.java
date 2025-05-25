@@ -14,10 +14,10 @@ public class MuestraSismica {
     }
 
 
-    public Object[] getDatos(){
-        Object[] vectorDatos = new Object[2];
+    public String[] getDatos(){
+        String[] vectorDatos = new String[2];
         vectorDatos[0] = fechaHoraMuestra.toString();
-        vectorDatos[1] = obtenerDetalles();
+        vectorDatos[1] = Arrays.toString(obtenerDetalles());
         return vectorDatos;
     }
     public String[] obtenerDetalles(){
