@@ -2,9 +2,10 @@ package org.example.ppaiprueba.modelo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Comparator;
 import javafx.util.Pair;
-import org.example.ppaiprueba.modelo.Estado;
 
 public class EventoSismico {
     private MagnitudRichter magnitud;
@@ -126,12 +127,29 @@ public class EventoSismico {
         return estadoActual.esPendienteRevision();
     }
 
-    public Object[] buscarDatosSeriesTemp(){
-        Object[] datosSeries = new Object[seriesTemporales.size()];
-        for (int i = 0; i < seriesTemporales.size(); i++){
-            datosSeries[i] = seriesTemporales.get(i).getDatos();
+    public String[][] buscarDatosSeriesTemp() {
+
+    String[][] datosSeries = new String[seriesTemporales.size()][2];
+    for (int i = 0; i < seriesTemporales.size(); i++) {
+        SerieTemporal serie = seriesTemporales.get(i);
+        String[][] datosTemp = serie.getDatos();
+        datosSeries[i][0] = datosTemp[0][0];
+        datosSeries[i][1] = datosTemp[0][1];
+
         }
-        return datosSeries;
+    return clasificaPorEstacion(datosSeries);
+}
+
+    public String[][] clasificaPorEstacion(String[][] datosSeries){
+
+        String[][] copia = Arrays.stream(datosSeries)
+                .map(String[]::clone)
+                .toArray(String[][]::new);
+
+        // Ordenar por primera columna (índice 0)
+        Arrays.sort(copia, Comparator.comparing(fila -> fila[0]));
+
+        return copia;
     }
 
     public void bloquearParaRevision() {
