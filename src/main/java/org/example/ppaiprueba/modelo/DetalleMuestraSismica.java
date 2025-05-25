@@ -8,9 +8,9 @@ public class DetalleMuestraSismica {
         this.valor = valor;
         this.tipoDeDato = tipoDeDato;
     }
-    public Object[] getDatos(){
-        Object[] vectorDatos = new Object[2];
-        vectorDatos[0] = valor;
+    public String[] getDatos(){
+        String[] vectorDatos = new String[2];
+        vectorDatos[0] = String.valueOf(valor);
         vectorDatos[1] = tipoDeDato.getDenominacion();
         return vectorDatos;
     }

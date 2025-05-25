@@ -17,11 +17,12 @@ public class EventoSismico {
     private String longitudEpicentro;
     private String latitudHipocentro;
     private String longitudHipocentro;
+    private List<SerieTemporal> seriesTemporales;
     //private Empleado empleado;
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
     public EventoSismico(MagnitudRichter magnitud, AlcanceSismo alcance, OrigenDeGeneracion origen, ClasificacionSismo clasificacion, LocalDateTime fechaHoraOcurrencia, Estado estadoInicial,
-    String latitudEpicentro, String longitudEpicentro, String latitudHipocentro, String longitudHipocentro) {
+    String latitudEpicentro, String longitudEpicentro, String latitudHipocentro, String longitudHipocentro, List<SerieTemporal> seriesTemporales) {
         this.magnitud = magnitud;
         this.alcance = alcance;
         this.origen = origen;
@@ -32,6 +33,7 @@ public class EventoSismico {
         this.longitudEpicentro = longitudEpicentro;
         this.latitudHipocentro = latitudHipocentro;
         this.longitudHipocentro = longitudHipocentro;
+        this.seriesTemporales = new ArrayList<>(seriesTemporales);
     }
 // get y set a otros objetos cambiarlos
     /*
@@ -124,6 +126,13 @@ public class EventoSismico {
         return estadoActual.esPendienteRevision();
     }
 
+    public Object[] buscarDatosSeriesTemp(){
+        Object[] datosSeries = new Object[seriesTemporales.size()];
+        for (int i = 0; i < seriesTemporales.size(); i++){
+            datosSeries[i] = seriesTemporales.get(i).getDatos();
+        }
+        return datosSeries;
+    }
 
     public void bloquearParaRevision() {
         // lógica para marcar que el evento está siendo revisado

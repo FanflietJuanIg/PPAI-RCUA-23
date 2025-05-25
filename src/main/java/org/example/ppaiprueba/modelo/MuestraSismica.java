@@ -1,31 +1,30 @@
 package org.example.ppaiprueba.modelo;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MuestraSismica {
     private LocalDateTime fechaHoraMuestra;
-    private DetalleMuestraSismica[] detalleMuestraSismica;
-    public MuestraSismica(LocalDateTime fechaHoraMuestra, DetalleMuestraSismica[] detalleMuestraSismica){
+    private List<DetalleMuestraSismica> detalleMuestraSismica;
+    public MuestraSismica(LocalDateTime fechaHoraMuestra, List<DetalleMuestraSismica> detalleMuestraSismica){
         this.fechaHoraMuestra = fechaHoraMuestra;
-        this.detalleMuestraSismica = detalleMuestraSismica;
+        this.detalleMuestraSismica = new ArrayList<>(detalleMuestraSismica);
     }
 
 
     public Object[] getDatos(){
         Object[] vectorDatos = new Object[2];
-        vectorDatos[0] = fechaHoraMuestra;
+        vectorDatos[0] = fechaHoraMuestra.toString();
         vectorDatos[1] = obtenerDetalles();
         return vectorDatos;
     }
-
-    public object[][] obetenerDetalles(){
-        Object[] vectorDatos = new Object[2];
-        Object[][] vectorContenedor = new Object[1][];
-        for (int i = 0; i < vectorDatos.length; i++){
-            vectorDatos[0] = detalleMuestraSismica[i].getValor();
-            vectorContenedor[1][i] = vectorDatos;
+    public String[] obtenerDetalles(){
+        String[] datosDetalles = new String[detalleMuestraSismica.size()];
+        for (int i = 0; i < detalleMuestraSismica.size();i++){
+            datosDetalles[i] = Arrays.toString(detalleMuestraSismica.get(i).getDatos());
         }
-
-        return vectorContenedor;
+        return datosDetalles;
     }
 }
