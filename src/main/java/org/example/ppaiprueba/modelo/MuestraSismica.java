@@ -14,16 +14,19 @@ public class MuestraSismica {
     }
 
 
-    public String[] getDatos(){
-        String[] vectorDatos = new String[2];
+    public Object[] getDatos() {
+        Object[] vectorDatos = new Object[2];
         vectorDatos[0] = fechaHoraMuestra.toString();
-        vectorDatos[1] = Arrays.toString(obtenerDetalles());
+        vectorDatos[1] = obtenerDetalles();
         return vectorDatos;
     }
-    public String[] obtenerDetalles(){
-        String[] datosDetalles = new String[detalleMuestraSismica.size()];
+    public String[][] obtenerDetalles(){
+        String[][] datosDetalles = new String[detalleMuestraSismica.size()][2];
         for (int i = 0; i < detalleMuestraSismica.size();i++){
-            datosDetalles[i] = Arrays.toString(detalleMuestraSismica.get(i).getDatos());
+            DetalleMuestraSismica detalle = detalleMuestraSismica.get(i);
+            String[] datosTemp = detalle.getDatos();
+            datosDetalles[i][0] = datosTemp[0];
+            datosDetalles[i][1] = datosTemp[1];
         }
         return datosDetalles;
     }

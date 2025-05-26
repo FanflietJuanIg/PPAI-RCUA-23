@@ -21,24 +21,25 @@ public class SerieTemporal {
         this.muestraSismicas = new ArrayList<>(muestraSismicas);
         this.sismografo = sismografo;
     }
-    public String[][] getDatos(){
-        String[] vectorDatos = new String[6];
+    public Object[][] getDatos(){
+        Object[] vectorDatos = new Object[6];
         vectorDatos[0] = condicionAlarma;
         vectorDatos[1] = fechaHoraInicioRegistroMuestras.toString();
         vectorDatos[2] =  fechaHoraRegistro.toString();
         vectorDatos[3] = String.valueOf(frecuenciaMuestreo);
-        vectorDatos[4] = Arrays.toString(obtenerMuestras());
+        vectorDatos[4] = obtenerMuestras();
 
-        String[][] vectorID = new String[1][2];
+        Object[][] vectorID = new String[1][2];
         vectorID[0][0] = sismografo.getIdEstacionSismologica();
-        vectorID[0][1] = Arrays.toString(vectorDatos);
+        vectorID[0][1] = vectorDatos;
 
         return vectorID;
     }
-    public String[] obtenerMuestras(){
-        String[] datosMuestras = new String[muestraSismicas.size()];
+    public Object[] obtenerMuestras(){
+        Object[] datosMuestras = new String[muestraSismicas.size()];
         for (int i = 0; i < muestraSismicas.size(); i++){
-            datosMuestras[i] = Arrays.toString(muestraSismicas.get(i).getDatos());
+            MuestraSismica muestra = muestraSismicas.get(i);
+            datosMuestras[i] = muestra.getDatos();
         }
         return datosMuestras;
     }

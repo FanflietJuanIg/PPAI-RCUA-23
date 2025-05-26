@@ -127,12 +127,12 @@ public class EventoSismico {
         return estadoActual.esPendienteRevision();
     }
 
-    public String[][] buscarDatosSeriesTemp() {
+    public Object[][] buscarDatosSeriesTemp() {
 
-    String[][] datosSeries = new String[seriesTemporales.size()][2];
+    Object[][] datosSeries = new String[seriesTemporales.size()][2];
     for (int i = 0; i < seriesTemporales.size(); i++) {
         SerieTemporal serie = seriesTemporales.get(i);
-        String[][] datosTemp = serie.getDatos();
+        Object[][] datosTemp = serie.getDatos();
         datosSeries[i][0] = datosTemp[0][0];
         datosSeries[i][1] = datosTemp[0][1];
 
@@ -140,17 +140,15 @@ public class EventoSismico {
     return clasificaPorEstacion(datosSeries);
 }
 
-    public String[][] clasificaPorEstacion(String[][] datosSeries){
-
-        String[][] copia = Arrays.stream(datosSeries)
-                .map(String[]::clone)
-                .toArray(String[][]::new);
-
-        // Ordenar por primera columna (índice 0)
-        Arrays.sort(copia, Comparator.comparing(fila -> fila[0]));
-
-        return copia;
-    }
+public Object[][] clasificaPorEstacion(Object[][] datosSeries) {
+    Object[][] copia = Arrays.stream(datosSeries)
+            .map(Object[]::clone)
+            .toArray(Object[][]::new);
+            
+    Arrays.sort(copia, Comparator.comparing(fila -> fila[0].toString()));
+    
+    return copia;
+}
 
     public void bloquearParaRevision() {
         // lógica para marcar que el evento está siendo revisado
