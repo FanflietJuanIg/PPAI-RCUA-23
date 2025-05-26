@@ -19,6 +19,8 @@ public class EventoSismico {
     private String latitudHipocentro;
     private String longitudHipocentro;
     private List<SerieTemporal> seriesTemporales;
+    private LocalDateTime fechaRevision; // Atributo añadido
+    private String responsableRevision;
     //private Empleado empleado;
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
@@ -38,26 +40,17 @@ public class EventoSismico {
     }
 // get y set a otros objetos cambiarlos
     /*
-    // Getters y Setters
-    public double getMagnitud() {
-        return magnitud;
-    }
+    // Getters y Setters (gaston : ya saque los get y set que estoy utilizando , dejo comentados
+    // los que todavia no usamos
 
     public void setMagnitud(double magnitud) {
         this.magnitud = magnitud;
-    }
-
-    public String getAlcance() {
-        return alcance;
     }
 
     public void setAlcance(String alcance) {
         this.alcance = alcance;
     }
 
-    public String getOrigen() {
-        return origen;
-    }
 
     public void setOrigen(String origen) {
         this.origen = origen;
@@ -71,13 +64,43 @@ public class EventoSismico {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+ */
+    public double getMagnitud() {
+        return magnitud.getNumero();
+    }
 
+    // Dentro de EventoSismico.java, ajusta estos métodos
+    public String getAlcance() {
+        return alcance.getDescripcion() + " - " + alcance.getNombre();
+    }
+
+    public void setAlcance(String alcanceTexto) {
+        // Dividir el texto en descripción y nombre (asumiendo formato "descripción - nombre")
+        String[] partes = alcanceTexto.split(" - ");
+        if (partes.length == 2) {
+            this.alcance = new AlcanceSismo(partes[0], partes[1]);
+        } else {
+            throw new IllegalArgumentException("Formato de alcance no válido: " + alcanceTexto);
+        }
+    }
+    public String getOrigen() {
+        return origen.getRegion() + ", " + origen.getProvincia();
+    }
+
+    public void setOrigen(String origenTexto) {
+        String[] partes = origenTexto.split(", ");
+        if (partes.length == 2) {
+            this.origen = new OrigenDeGeneracion(partes[0], partes[1]);
+        } else {
+            throw new IllegalArgumentException("Formato de origen no válido: " + origenTexto);
+        }
+    }
     public LocalDateTime getFechaRevision() {
         return fechaRevision;
     }
 
-    public void setFechaRevision(LocalDateTime fechaRevision) {
-        this.fechaRevision = fechaRevision;
+    public void setFechaRevision(LocalDateTime fecha) {
+        this.fechaRevision = fecha;
     }
 
     public String getResponsableRevision() {
@@ -87,7 +110,7 @@ public class EventoSismico {
     public void setResponsableRevision(String responsableRevision) {
         this.responsableRevision = responsableRevision;
     }
-*/
+
     public Object[] obtenerMagnitud(){
         Object[] vector = new Object[2];
         vector[0] = magnitud.getDescripcionMagnitud();
@@ -117,7 +140,10 @@ public class EventoSismico {
     public LocalDateTime getFechaHoraOcurrencia() {
         return fechaHoraOcurrencia;
     }
-
+    // Dentro de EventoSismico.java, agrega estos setters al final de la clase
+    public void setMagnitud(double numero) {
+        this.magnitud = new MagnitudRichter(this.magnitud.getDescripcionMagnitud(), numero);
+    }
     // metodos
     public boolean esAutodetectado() {
         return estadoActual.esAutodetectado();
@@ -160,6 +186,37 @@ public Object[][] clasificaPorEstacion(Object[][] datosSeries) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(LocalDateTime.now());
             }
+        }
+    }
+
+    public void cerrarEstadoActual(LocalDateTime fechaHoraFin) {
+        for (CambioEstado cambio : cambiosEstado) {
+            if (cambio.esActual()) {
+                cambio.setFechaHoraFin(fechaHoraFin);
+                break;
+            }
+        }
+    }
+    public void setEstado(String estado) {
+        // Mapear la cadena a un objeto Estado existente
+        switch (estado) {
+            case "Pendiente":
+                this.estadoActual = Estado.PENDIENTE;
+                break;
+            case "Confirmado":
+                this.estadoActual = Estado.CONFIRMADO;
+                break;
+            case "Rechazado":
+                this.estadoActual = Estado.RECHAZADO;
+                break;
+            case "Derivado":
+                this.estadoActual = Estado.DERIVADO;
+                break;
+            case "Bloqueado en revisión":
+                this.estadoActual = Estado.BLOQUEADO_EN_REVISION;
+                break;
+            default:
+                throw new IllegalArgumentException("Estado no válido: " + estado);
         }
     }
 }

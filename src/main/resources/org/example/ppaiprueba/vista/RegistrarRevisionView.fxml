@@ -7,7 +7,7 @@
       fx:controller="org.example.ppaiprueba.vista.RegistrarRevisionFController"
       spacing="10" alignment="TOP_CENTER" style="-fx-padding: 20">
 
-    <Button fx:id="btnIniciarRevision" text="Iniciar Revisión" onAction="#onIniciarRevision" />
+    <ComboBox fx:id="comboEventosPendientes" prefWidth="400"/>
 
     <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" />
 

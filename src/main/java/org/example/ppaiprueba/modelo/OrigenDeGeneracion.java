@@ -1,27 +1,27 @@
 package org.example.ppaiprueba.modelo;
 
 public class OrigenDeGeneracion {
-    private String descripcion;
-    private String nombre;
+    private String region;
+    private String provincia;
 
-    public OrigenDeGeneracion(String descripcion, String nombre) {
-        this.descripcion = descripcion;
-        this.nombre = nombre;
+    public OrigenDeGeneracion(String region, String provincia) {
+        this.region = region;
+        this.provincia = provincia;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getRegion() {
+        return region;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getProvincia() {
+        return provincia;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 }

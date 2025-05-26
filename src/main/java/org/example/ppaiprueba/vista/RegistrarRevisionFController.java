@@ -1,4 +1,3 @@
-// RegistrarRevisionFController.java
 package org.example.ppaiprueba.vista;
 
 import javafx.fxml.FXML;
@@ -12,12 +11,13 @@ import org.example.ppaiprueba.modelo.AlcanceSismo;
 import org.example.ppaiprueba.modelo.OrigenDeGeneracion;
 import org.example.ppaiprueba.modelo.ClasificacionSismo;
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrarRevisionFController {
     @FXML private Button btnIniciarRevision;
-    @FXML private ListView<EventoSismico> listaEventos;
+    @FXML private ListView<EventoSismico> listaEventos; // Usamos ListView según el FXML
+    @FXML private ComboBox<EventoSismico> comboEventosPendientes; // Mantendremos el ComboBox del FXML
     @FXML private Button btnVisualizarMapa;
     @FXML private VBox formularioEdicion;
     @FXML private HBox opcionesRevision;
@@ -30,18 +30,74 @@ public class RegistrarRevisionFController {
 
     @FXML
     public void initialize() {
-        // Cargar eventos simulados
-        Estado pendiente = new Estado("Pendiente Revision");
+        // Crear eventos simulados directamente
+        Estado pendiente = Estado.PENDIENTE;
         MagnitudRichter magnitud = new MagnitudRichter("Alta", 3.4);
         OrigenDeGeneracion origen = new OrigenDeGeneracion("Zona Norte", "Cordoba");
-        ClasificacionSismo clasificacion= new ClasificacionSismo(20, 40, "Maria");
+        ClasificacionSismo clasificacion = new ClasificacionSismo(20, 40, "Maria");
         AlcanceSismo alcance = new AlcanceSismo("Alto", "Mucho");
 
         List<EventoSismico> eventos = List.of(
-                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(3), pendiente, "20º"),
-                new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(6), pendiente)
+                new EventoSismico(
+                        magnitud,
+                        alcance,
+                        origen,
+                        clasificacion,
+                        LocalDateTime.now().minusHours(3),
+                        pendiente,
+                        "20º", "-64º", "15º", "-65º", new ArrayList<>()
+                ),
+                new EventoSismico(
+                        magnitud,
+                        alcance,
+                        origen,
+                        clasificacion,
+                        LocalDateTime.now().minusHours(6),
+                        pendiente,
+                        "21º", "-63º", "14º", "-66º", new ArrayList<>()
+                )
         );
+
         cuController = new CUController(eventos);
+
+        // Configurar ListView
+        listaEventos.getItems().addAll(cuController.obtenerEventosPendientes());
+        listaEventos.setCellFactory(param -> new ListCell<EventoSismico>() {
+            @Override
+            protected void updateItem(EventoSismico item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getFechaHoraOcurrencia() + " - " + item.getMagnitud());
+                }
+            }
+        });
+
+        // Configurar ComboBox (opcional, si decides usarlo)
+        comboEventosPendientes.getItems().addAll(cuController.obtenerEventosPendientes());
+        comboEventosPendientes.setCellFactory(param -> new ListCell<EventoSismico>() {
+            @Override
+            protected void updateItem(EventoSismico item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getFechaHoraOcurrencia() + " - " + item.getMagnitud());
+                }
+            }
+        });
+        comboEventosPendientes.setButtonCell(new ListCell<EventoSismico>() {
+            @Override
+            protected void updateItem(EventoSismico item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Seleccione un evento");
+                } else {
+                    setText(item.getFechaHoraOcurrencia() + " - " + item.getMagnitud());
+                }
+            }
+        });
 
         // Ocultar secciones
         btnVisualizarMapa.setVisible(false);
@@ -51,22 +107,18 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onIniciarRevision() {
-        List<EventoSismico> eventos = cuController.obtenerEventosPendientes();
-        listaEventos.getItems().setAll(eventos);
+        listaEventos.getItems().setAll(cuController.obtenerEventosPendientes());
     }
 
     @FXML
     private void onSeleccionarEvento() {
         eventoSeleccionado = listaEventos.getSelectionModel().getSelectedItem();
         if (eventoSeleccionado != null) {
-            // Lógica ficticia para bloqueo y obtención de datos
-            eventoSeleccionado.setEstado("En revisión");
-
+            eventoSeleccionado.setEstado("Bloqueado en revisión");
             btnVisualizarMapa.setVisible(true);
             formularioEdicion.setVisible(true);
             opcionesRevision.setVisible(true);
 
-            // Precargar datos
             txtMagnitud.setText(String.valueOf(eventoSeleccionado.getMagnitud()));
             txtAlcance.setText(eventoSeleccionado.getAlcance());
             txtOrigen.setText(eventoSeleccionado.getOrigen());
