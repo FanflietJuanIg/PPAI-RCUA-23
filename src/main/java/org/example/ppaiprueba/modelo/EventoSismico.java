@@ -107,6 +107,7 @@ public class EventoSismico {
         this.alcance.setDescripcion(descripcion);
         this.alcance.setNombre(nombre);
     }
+    
     public Object[] getAlcance(){
         Object[] vector = new Object[2];
         vector[0] = alcance.getDescripcion();
