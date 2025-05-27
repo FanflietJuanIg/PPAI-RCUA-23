@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Comparator;
 import javafx.util.Pair;
+import org.example.ppaiprueba.modelo.Usuario;
 
 public class EventoSismico {
     private MagnitudRichter magnitud;
@@ -88,12 +89,44 @@ public class EventoSismico {
         this.responsableRevision = responsableRevision;
     }
 */
-    public Object[] obtenerMagnitud(){
+
+    // Intento hacer un set de magnitud
+    public void setMagnitud(String descripcion, Double valor) {
+        this.magnitud.setDescripcionMagnitud(descripcion);
+        this.magnitud.setNumero(valor);
+    }
+
+    public Object[] getMagnitud(){
         Object[] vector = new Object[2];
         vector[0] = magnitud.getDescripcionMagnitud();
         vector[1] = magnitud.getNumero();
         return vector;
     }
+
+    public void setAlcance(String descripcion, String nombre) {
+        this.alcance.setDescripcion(descripcion);
+        this.alcance.setNombre(nombre);
+    }
+    public Object[] getAlcance(){
+        Object[] vector = new Object[2];
+        vector[0] = alcance.getDescripcion();
+        vector[1] = alcance.getNombre();
+        return vector;
+    }
+
+    public void setOrigen(String descripcion, String nombre) {
+        this.alcance.setDescripcion(descripcion);
+        this.alcance.setNombre(nombre);
+    }
+
+    public Object[] getOrigen(){
+        Object[] vector = new Object[2];
+        vector[0] = origen.getDescripcion();
+        vector[1] = origen.getNombre();
+        return vector;
+    }
+
+
     public String getLatitudEpicentro(){
         return latitudEpicentro;
     }
@@ -137,31 +170,86 @@ public class EventoSismico {
         datosSeries[i][1] = datosTemp[0][1];
 
         }
-    return clasificaPorEstacion(datosSeries);
+    return clasificarDatosPorEstacion(datosSeries);
 }
 
-public Object[][] clasificaPorEstacion(Object[][] datosSeries) {
-    Object[][] copia = Arrays.stream(datosSeries)
-            .map(Object[]::clone)
-            .toArray(Object[][]::new);
-            
-    Arrays.sort(copia, Comparator.comparing(fila -> fila[0].toString()));
-    
-    return copia;
-}
+
+    public String[][] clasificarDatosPorEstacion(String[][] datosSeries){
+
+        String[][] copia = Arrays.stream(datosSeries)
+                .map(String[]::clone)
+                .toArray(String[][]::new);
+
+        // Ordenar por primera columna (índice 0)
+        Arrays.sort(copia, Comparator.comparing(fila -> fila[0]));
+
+        return copia;
+    }
+
 
     public void bloquearParaRevision() {
         // lógica para marcar que el evento está siendo revisado
         System.out.println("Evento bloqueado para revisión");
     }
 
+
+    public void cambiarEstado(Estado estado, Empleado empleado) {
+        // 2) Creo el registro de cambio
+        CambioEstado cambio = new CambioEstado(LocalDateTime.now(), estado, empleado);
+        // 3) Lo agrego quitando el actual y cerrándolo
+        agregarCambioEstado(cambio);
+    }
+
+    public void agregarCambioEstado(CambioEstado cambio) {
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(LocalDateTime.now());
+            }
+        }
+        cambiosEstado.add(cambio);
+        this.estadoActual = cambio.getEstado();
+
+    }
+
+
+
+}
+
+/*
+    //Registra un cambio de estado en el evento.
+
+    public void agregarCambioEstado(CambioEstado cambio) {
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(LocalDateTime.now());
+            }
+        }
+        cambiosEstado.add(cambio);
+        this.estadoActual = cambio.getEstado();
+    }
+
+     //Registra un cambio de estado en el evento.
+
+public void agregarCambioEstado(CambioEstado cambio) {
+    for (CambioEstado ce : cambiosEstado) {
+        if (ce.esActual()) {
+            ce.setFechaHoraFin(LocalDateTime.now());
+        }
+    }
+    cambiosEstado.add(cambio);
+    this.estadoActual = cambio.getEstado();
+}
+
     public void agregarCambioEstado(CambioEstado cambio) {
         cerrarEstadoActual(LocalDateTime.now());
         cambiosEstado.add(cambio);
     }
-}
 
-/*
+
+
+
+
+
     public boolean estaEnRevision() {
         return estadoActual.getNombre().equalsIgnoreCase("En Revision");
     }

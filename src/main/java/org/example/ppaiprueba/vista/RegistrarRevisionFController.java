@@ -12,6 +12,7 @@ import org.example.ppaiprueba.modelo.AlcanceSismo;
 import org.example.ppaiprueba.modelo.OrigenDeGeneracion;
 import org.example.ppaiprueba.modelo.ClasificacionSismo;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class RegistrarRevisionFController {
     @FXML
     public void initialize() {
         // Cargar eventos simulados
-        Estado pendiente = new Estado("Pendiente Revision");
+       // Estado pendiente = new Estado("Pendiente Revision");
         MagnitudRichter magnitud = new MagnitudRichter("Alta", 3.4);
         OrigenDeGeneracion origen = new OrigenDeGeneracion("Zona Norte", "Cordoba");
         ClasificacionSismo clasificacion= new ClasificacionSismo(20, 40, "Maria");
@@ -60,16 +61,16 @@ public class RegistrarRevisionFController {
         eventoSeleccionado = listaEventos.getSelectionModel().getSelectedItem();
         if (eventoSeleccionado != null) {
             // Lógica ficticia para bloqueo y obtención de datos
-            eventoSeleccionado.setEstado("En revisión");
+            eventoSeleccionado.setEstadoActual("En revisión"); //hay que pasarle un objeto estado creado previamente
 
             btnVisualizarMapa.setVisible(true);
             formularioEdicion.setVisible(true);
             opcionesRevision.setVisible(true);
 
             // Precargar datos
-            txtMagnitud.setText(String.valueOf(eventoSeleccionado.getMagnitud()));
-            txtAlcance.setText(eventoSeleccionado.getAlcance());
-            txtOrigen.setText(eventoSeleccionado.getOrigen());
+            txtMagnitud.setText(Arrays.toString(eventoSeleccionado.getMagnitud()));
+            txtAlcance.setText(Arrays.toString(eventoSeleccionado.getAlcance()));
+            txtOrigen.setText(Arrays.toString(eventoSeleccionado.getOrigen()));
         }
     }
 
@@ -80,9 +81,9 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onGuardarEdicion() {
-        eventoSeleccionado.setMagnitud(Double.parseDouble(txtMagnitud.getText()));
-        eventoSeleccionado.setAlcance(txtAlcance.getText());
-        eventoSeleccionado.setOrigen(txtOrigen.getText());
+        eventoSeleccionado.setMagnitud( "descripcion",Double.parseDouble(txtMagnitud.getText())); //hay que agregar la descripcion
+        eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
+        eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
 
     @FXML
