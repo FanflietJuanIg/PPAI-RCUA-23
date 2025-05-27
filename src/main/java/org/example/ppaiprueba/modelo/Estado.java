@@ -1,33 +1,72 @@
+// ======================
+// Estado.java
+// ======================
 package org.example.ppaiprueba.modelo;
 
+/**
+ * Clase que representa el estado de un elemento del sistema,
+ * usando enums internos limitados para tipo y ámbito.
+ */
 public class Estado {
-    private String nombre;
+    public enum Tipo {
+        PENDIENTE_REVISION,
+        EN_REVISION,
+        RECHAZADO,
+        AUTODETECTADO;
+    }
 
-    public Estado(String nombre) {
-        this.nombre = nombre;
+    public enum Ambito {
+        EVENTO_SISMICO,
+        SISMOGRAFO;
+    }
+
+    private Tipo tipo;
+    private Ambito ambito;
+
+    /**
+     * Constructor completo para estado con ámbito y flag de autodetección.
+     */
+    public Estado(Tipo tipo, Ambito ambito) {
+        this.tipo = tipo;
+        this.ambito = ambito;
+    }
+
+    /**
+     * Constructor básico para estados de eventos sísmicos no autodetectados.
+     */
+    public Estado(Tipo tipo) {
+        this(tipo, Ambito.EVENTO_SISMICO);
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+
+    public Ambito getAmbito() {
+        return ambito;
+    }
+
+    /**
+     * Indica si el estado corresponde a un evento autodetectado.
+     */
+    public boolean esAutodetectado() {
+        return tipo == tipo.AUTODETECTADO;
     }
 
     public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre){
-        this.nombre = nombre;
-    }
-
-    public boolean esAutodetectado() {
-        return nombre.equalsIgnoreCase("Autodetectado");
+        return tipo.name().replace('_', ' ');
     }
 
     public boolean esPendienteRevision() {
-        return nombre.equalsIgnoreCase("Pendiente Revision");
+        return tipo == Tipo.PENDIENTE_REVISION;
     }
 
     public boolean esEnRevision() {
-        return nombre.equalsIgnoreCase("En Revision");
+        return tipo == Tipo.EN_REVISION;
     }
 
     public boolean esRechazado() {
-        return nombre.equalsIgnoreCase("Rechazado");
+        return tipo == Tipo.RECHAZADO;
     }
+
 }

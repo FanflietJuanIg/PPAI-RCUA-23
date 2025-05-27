@@ -1,10 +1,12 @@
 //Controlador que implementa la logica de negocio CUController.java
 package org.example.ppaiprueba.control;
 
+import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.example.ppaiprueba.modelo.Sesion;
 
 import org.example.ppaiprueba.modelo.Estado;
 
@@ -27,7 +29,7 @@ public class CUController {
                 .sorted(Comparator.comparing(EventoSismico::getFechaHoraOcurrencia).reversed())
                 .map(e -> {
                     Map<String, Object> mapa = new HashMap<>();
-                    mapa.put("magnitud", e.obtenerMagnitud());
+                    mapa.put("magnitud", e.getMagnitud());
                     mapa.put("fecha y hora ocurrencia", e.getFechaHoraOcurrencia());
                     mapa.put("Latitud Hipocentro", e.getLatitudHipocentro());
                     mapa.put("Longitud Hipocentro", e.getLongitudHipocentro());
@@ -38,21 +40,31 @@ public class CUController {
                 .collect(Collectors.toList());
     }
 
-    public void confirmarEvento(EventoSismico evento, String analista) {
-        evento.setEstado("Confirmado");
-        evento.setFechaRevision(LocalDateTime.now());
-        evento.setResponsableRevision(analista);
+    /*
+      public void confirmarEvento(EventoSismico evento, Sesion sesion) {
+
+          evento.setEstadoActual("Confirmado"); //Tenemos que pasarle un objeto Estado creado previamente
+          evento.setFechaRevision(LocalDateTime.now());
+          evento.setResponsableRevision(analista);
+
+
+        Estado nuevoEstado = new Estado(Estado.Tipo.EN_REVISION, Estado.Ambito.EVENTO_SISMICO);
+        evento.cambiarEstado(nuevoEstado, sesion.getEmpleadoLogueado());
     }
 
-    public void rechazarEvento(EventoSismico evento, String analista) {
-        evento.setEstado("Rechazado");
-        evento.setFechaRevision(LocalDateTime.now());
-        evento.setResponsableRevision(analista);
-    }
 
     public void derivarEvento(EventoSismico evento, String analista) {
         evento.setEstado("Derivado");
         evento.setFechaRevision(LocalDateTime.now());
         evento.setResponsableRevision(analista);
     }
+      */
+
+    public void rechazarEventoSismico(EventoSismico evento, Sesion sesion) {
+        Estado nuevoEstado = new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO);
+        evento.cambiarEstado(nuevoEstado, sesion.getEmpleadoLogueado());
+    }
+
+
+
 }

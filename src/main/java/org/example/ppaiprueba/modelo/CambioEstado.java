@@ -6,10 +6,12 @@ public class CambioEstado {
     private LocalDateTime fechaHoraInicio;
     private LocalDateTime fechaHoraFin;
     private Estado estado;
+    private Empleado empleado;
 
-    public CambioEstado(LocalDateTime inicio, Estado estado) {
+    public CambioEstado(LocalDateTime inicio, Estado estado, Empleado empleado) {
         this.fechaHoraInicio = inicio;
         this.estado = estado;
+        this.empleado = empleado;
     }
 
     public boolean esActual() {
@@ -23,4 +25,8 @@ public class CambioEstado {
     public Estado getEstado() {
         return estado;
     }
+
+    public void setResponsable(Empleado empleado) {this.empleado = empleado;}
+
+    public void getResponsable() {this.empleado = empleado;}
 }
