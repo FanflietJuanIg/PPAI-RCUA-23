@@ -156,11 +156,8 @@ public Object[][] clasificaPorEstacion(Object[][] datosSeries) {
     }
 
     public void agregarCambioEstado(CambioEstado cambio) {
-        for (CambioEstado ce : cambiosEstado) {
-            if (ce.esActual()) {
-                ce.setFechaHoraFin(LocalDateTime.now());
-            }
-        }
+        cerrarEstadoActual(LocalDateTime.now());
+        cambiosEstado.add(cambio);
     }
 }
 
