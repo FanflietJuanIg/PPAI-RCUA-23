@@ -187,13 +187,7 @@ public class EventoSismico {
         return copia;
     }
 
-
-    public void bloquearParaRevision() {
-        // lógica para marcar que el evento está siendo revisado
-        System.out.println("Evento bloqueado para revisión");
-    }
-
-//cambiar el nombre del metodo en el diagrama de secuencia
+//TODO: cambiar el nombre del metodo en el diagrama de secuencia
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
         // TODO: //la siguiente parte no especifica en el diagrama de secuencia, talvez conviene un self de evento sismico que setee su estado actual y añada su cambio de estado
