@@ -160,7 +160,7 @@ public class EventoSismico {
     public boolean esPendienteRevision() {
         return estadoActual.esPendienteRevision();
     }
-
+/*
     public Object[][] buscarDatosSeriesTemp() {
 
     Object[][] datosSeries = new String[seriesTemporales.size()][2];
@@ -173,7 +173,22 @@ public class EventoSismico {
         }
     return clasificarDatosPorEstacion(datosSeries);
 }
+// corregir
+*/
+public String[][] buscarDatosSeriesTemp() {
+    String[][] datosSeries = new String[seriesTemporales.size()][2];
 
+    for (int i = 0; i < seriesTemporales.size(); i++) {
+        SerieTemporal serie = seriesTemporales.get(i);
+        Object[][] datosTemp = serie.getDatos(); // se asume que devuelve Object[][]
+
+        // Convertimos manualmente a String (si estás seguro del tipo)
+        datosSeries[i][0] = datosTemp[0][0].toString();
+        datosSeries[i][1] = datosTemp[0][1].toString();
+    }
+
+    return clasificarDatosPorEstacion(datosSeries);
+}
 
     public String[][] clasificarDatosPorEstacion(String[][] datosSeries){
 
