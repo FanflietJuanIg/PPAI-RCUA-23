@@ -14,9 +14,6 @@ public class CUController {
     private List<EventoSismico> eventosSismicos;
     private List<Estado> estados;
     private Sesion sesion;
-    public CUController(List<EventoSismico> eventos) {
-        this.eventosPendientes = eventos;
-    }
 
     public void obtenerEventosPendientes() {
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
