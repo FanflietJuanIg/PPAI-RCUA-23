@@ -28,5 +28,5 @@ public class CambioEstado {
 
     public void setResponsable(Empleado empleado) {this.empleado = empleado;}
 
-    public void getResponsable() {this.empleado = empleado;}
+    public Empleado getResponsable() {return empleado;}
 }

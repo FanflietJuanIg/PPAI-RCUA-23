@@ -193,13 +193,24 @@ public class EventoSismico {
     }
 
 //cambiar el nombre del metodo en el diagrama de secuencia
-    public void newCambioEstado(Estado estado, Empleado empleado) {
-        CambioEstado cambio = new CambioEstado(LocalDateTime.now(), estado, empleado);
+    public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
+        CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
         // TODO: //la siguiente parte no especifica en el diagrama de secuencia, talvez conviene un self de evento sismico que setee su estado actual y añada su cambio de estado
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
 
+    public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
+        Empleado empleadoCambio = null;
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(fechaHoraActual);
+                empleadoCambio = ce.getResponsable();
+                break;
+            }
+        }
+        newCambioEstado(fechaHoraActual,estado, empleadoCambio);
+    }
     public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
@@ -207,7 +218,7 @@ public class EventoSismico {
                 break;
             }
         }
-        newCambioEstado(estado, empleadoLogueado);
+        newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
 
 

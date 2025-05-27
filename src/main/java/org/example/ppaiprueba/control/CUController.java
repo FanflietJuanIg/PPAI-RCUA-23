@@ -64,6 +64,7 @@ public class CUController {
         LocalDateTime fechaHoraActual = LocalDateTime.now();
         buscarEstadoRechazado(evento, fechaHoraActual);
     }
+
     public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
         Estado rechazado = null;
         for (Estado estado : estados) {
@@ -74,6 +75,21 @@ public class CUController {
         }
         buscarEmpleadoLogeado(evento, fechaHoraActual, rechazado);
     }
+
+    public void buscarEstadoEnRevision(EventoSismico evento, LocalDateTime fechaHoraActual){
+        Estado enRevision = null;
+        for (Estado estado : estados){
+            if (estado.esAmbitoEventoSismico() && estado.esEnRevision()){
+                enRevision = estado;
+                break;
+            }
+        }
+    }
+
+    public void bloquearEventoParaRevision(Estado enRevision, EventoSismico evento, LocalDateTime fechaHoraActual){
+            evento.bloquearParaRevision(enRevision, fechaHoraActual);
+    }
+
     public void buscarEmpleadoLogeado(EventoSismico evento, LocalDateTime fechaHoraActual ,Estado rechazado){
         Empleado empleadoLogueado = sesion.getEmpleadoLogueado();
         rechazarEventoSismico(rechazado, empleadoLogueado, evento, fechaHoraActual);
