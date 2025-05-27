@@ -69,4 +69,7 @@ public class Estado {
         return tipo == Tipo.RECHAZADO;
     }
 
+    public boolean esAmbitoEventoSismico(){
+        return ambito == Ambito.EVENTO_SISMICO;
+    }
 }

@@ -193,23 +193,22 @@ public class EventoSismico {
         System.out.println("Evento bloqueado para revisión");
     }
 
-
-    public void cambiarEstado(Estado estado, Empleado empleado) {
-        // 2) Creo el registro de cambio
+//cambiar el nombre del metodo en el diagrama de secuencia
+    public void newCambioEstado(Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(LocalDateTime.now(), estado, empleado);
-        // 3) Lo agrego quitando el actual y cerrándolo
-        agregarCambioEstado(cambio);
-    }
-
-    public void agregarCambioEstado(CambioEstado cambio) {
-        for (CambioEstado ce : cambiosEstado) {
-            if (ce.esActual()) {
-                ce.setFechaHoraFin(LocalDateTime.now());
-            }
-        }
+        // TODO: //la siguiente parte no especifica en el diagrama de secuencia, talvez conviene un self de evento sismico que setee su estado actual y añada su cambio de estado
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
+    }
 
+    public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(fechaHoraActual);
+                break;
+            }
+        }
+        newCambioEstado(estado, empleadoLogueado);
     }
 
 

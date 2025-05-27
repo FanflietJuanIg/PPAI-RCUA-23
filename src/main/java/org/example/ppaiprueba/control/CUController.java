@@ -12,7 +12,8 @@ import org.example.ppaiprueba.modelo.Estado;
 
 public class CUController {
     private List<EventoSismico> eventosPendientes;
-
+    private List<Estado> estados;
+    private Sesion sesion;
     public CUController(List<EventoSismico> eventos) {
         this.eventosPendientes = eventos;
     }
@@ -59,10 +60,26 @@ public class CUController {
         evento.setResponsableRevision(analista);
     }
       */
-
-    public void rechazarEventoSismico(EventoSismico evento, Sesion sesion) {
-        Estado nuevoEstado = new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO); // No se como modelar el estado =)
-        evento.cambiarEstado(nuevoEstado, sesion.getEmpleadoLogueado());
+    public void tomarFechaHoraActual(EventoSismico evento){
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        buscarEstadoRechazado(evento, fechaHoraActual);
+    }
+    public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
+        Estado rechazado = null;
+        for (Estado estado : estados) {
+            if (estado.esAmbitoEventoSismico() && estado.esRechazado()) {
+                rechazado = estado;
+                break;
+            }
+        }
+        buscarEmpleadoLogeado(evento, fechaHoraActual, rechazado);
+    }
+    public void buscarEmpleadoLogeado(EventoSismico evento, LocalDateTime fechaHoraActual ,Estado rechazado){
+        Empleado empleadoLogueado = sesion.getEmpleadoLogueado();
+        rechazarEventoSismico(rechazado, empleadoLogueado, evento, fechaHoraActual);
+    }
+    public void rechazarEventoSismico(Estado estadoRechazado,Empleado empleadoLogueado, EventoSismico evento, LocalDateTime fechaHoraActual) {
+        evento.rechazar(estadoRechazado, empleadoLogueado, fechaHoraActual);
     }
 
 
