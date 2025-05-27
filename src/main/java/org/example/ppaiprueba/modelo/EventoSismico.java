@@ -174,18 +174,18 @@ public class EventoSismico {
     return clasificarDatosPorEstacion(datosSeries);
 }
 
-
-    public String[][] clasificarDatosPorEstacion(String[][] datosSeries){
-
-        String[][] copia = Arrays.stream(datosSeries)
-                .map(String[]::clone)
-                .toArray(String[][]::new);
-
-        // Ordenar por primera columna (índice 0)
-        Arrays.sort(copia, Comparator.comparing(fila -> fila[0]));
-
-        return copia;
-    }
+//FIXME: cambios por ai, verificar si funcion
+public Object[][] clasificarDatosPorEstacion(Object[][] datosSeries) {
+    Object[][] copia = Arrays.stream(datosSeries)
+            .map(Object[]::clone)
+            .toArray(Object[][]::new);
+    
+    Arrays.sort(copia, (fila1, fila2) -> 
+        fila1[0].toString().compareTo(fila2[0].toString())
+    );
+    
+    return copia;
+}
 
 //TODO: cambiar el nombre del metodo en el diagrama de secuencia
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {

@@ -39,9 +39,11 @@ public class RegistrarRevisionFController {
         AlcanceSismo alcance = new AlcanceSismo("Alto", "Mucho");
 
         List<EventoSismico> eventos = List.of(
+                //FIXME: completar datos faltantes
                 new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(3), pendiente, "20º"),
                 new EventoSismico(magnitud, alcance, origen, clasificacion,LocalDateTime.now().minusHours(6), pendiente)
         );
+        //FIXME: agregar datos faltantes
         cuController = new CUController(eventos);
 
         // Ocultar secciones
@@ -52,6 +54,9 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onIniciarRevision() {
+        /*FIXME: si se quiere que el gestor retorne los datos, agregar un return. Si se quiere que el gestor llame a esta funcion,
+           agregar el metodo en el gestor
+         */
         List<EventoSismico> eventos = cuController.obtenerEventosPendientes();
         listaEventos.getItems().setAll(eventos);
     }
