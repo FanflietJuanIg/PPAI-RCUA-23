@@ -11,34 +11,38 @@ import org.example.ppaiprueba.modelo.Sesion;
 import org.example.ppaiprueba.modelo.Estado;
 
 public class CUController {
-    private List<EventoSismico> eventosPendientes;
+    private List<EventoSismico> eventosSismicos;
     private List<Estado> estados;
     private Sesion sesion;
     public CUController(List<EventoSismico> eventos) {
         this.eventosPendientes = eventos;
     }
 
-    public List<EventoSismico> obtenerEventosPendientes() {
-        return eventosPendientes.stream()
+    public void obtenerEventosPendientes() {
+        List<EventoSismico> eventosPendientes = eventosSismicos.stream()
                 .filter(EventoSismico::esPendienteRevision)
+                .filter(EventoSismico::esAutodetectado)
                 .toList();
+        ordenarEventos(eventosPendientes);
+
     }
 // esto es un map de los datos que se le van a pasar a la pantalla, no todos los datos del evento deben ser visualizados
 // uso map para no tener que crear otra clase lo cual causaria inconsistencia con el modelo
-    public List<Map<String, Object>> OrdenarEventos(){
-        return obtenerEventosPendientes().stream()
+    public void ordenarEventos(List<EventoSismico> eventosPendientes){
+        List<Map<String, Object>> eventosOrdenados = eventosPendientes.stream()
                 .sorted(Comparator.comparing(EventoSismico::getFechaHoraOcurrencia).reversed())
                 .map(e -> {
-                    Map<String, Object> mapa = new HashMap<>();
-                    mapa.put("magnitud", e.getMagnitud());
-                    mapa.put("fecha y hora ocurrencia", e.getFechaHoraOcurrencia());
-                    mapa.put("Latitud Hipocentro", e.getLatitudHipocentro());
-                    mapa.put("Longitud Hipocentro", e.getLongitudHipocentro());
-                    mapa.put("Latitud Epicentro", e.getLatitudEpicentro());
-                    mapa.put("Longitud Epicentro", e.getLongitudEpicentro());
-                    return mapa;
+                    Map<String, Object> eventosMapeado = new HashMap<>();
+                    eventosMapeado.put("magnitud", e.getMagnitud());
+                    eventosMapeado.put("fecha y hora ocurrencia", e.getFechaHoraOcurrencia());
+                    eventosMapeado.put("Latitud Hipocentro", e.getLatitudHipocentro());
+                    eventosMapeado.put("Longitud Hipocentro", e.getLongitudHipocentro());
+                    eventosMapeado.put("Latitud Epicentro", e.getLatitudEpicentro());
+                    eventosMapeado.put("Longitud Epicentro", e.getLongitudEpicentro());
+                    return eventosMapeado;
                 })
-                .collect(Collectors.toList());
+                .toList();
+        //TODO: aqui deberia ir el metodo para mostrar a la pantalla, pasando como parametro eventosOrdenados
     }
 
     /*
