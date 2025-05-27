@@ -61,7 +61,7 @@ public class CUController {
       */
 
     public void rechazarEventoSismico(EventoSismico evento, Sesion sesion) {
-        Estado nuevoEstado = new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO);
+        Estado nuevoEstado = new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO); // No se como modelar el estado =)
         evento.cambiarEstado(nuevoEstado, sesion.getEmpleadoLogueado());
     }
 
