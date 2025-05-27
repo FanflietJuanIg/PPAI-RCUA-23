@@ -73,6 +73,11 @@ public class RegistrarRevisionFController {
             txtOrigen.setText(Arrays.toString(eventoSeleccionado.getOrigen()));
         }
     }
+    //TODO: Preguntar a juani como hace
+    @FXML
+    private void habilitarOpcionVerMapa() {
+        btnVisualizarMapa.setVisible(true);
+    }
 
     @FXML
     private void onVerMapa() {
@@ -86,6 +91,7 @@ public class RegistrarRevisionFController {
         eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
 
+    //TODO: Tendria que ser un solo metodo que tome la opcion seleccionada y la pase a la funcion tomarOpcion en el controllador, esa funcion va a decidir si se rechaza, deriva o confirma
     @FXML
     private void onConfirmar() {
         cuController.confirmarEvento(eventoSeleccionado, "Analista 1");
@@ -94,7 +100,7 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onRechazar() {
-        cuController.rechazarEvento(eventoSeleccionado, "Analista 1");
+        cuController.validarDatos(eventoSeleccionado);
         limpiarVista();
     }
 

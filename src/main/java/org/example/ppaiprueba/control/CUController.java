@@ -9,11 +9,13 @@ import java.util.stream.Collectors;
 import org.example.ppaiprueba.modelo.Sesion;
 
 import org.example.ppaiprueba.modelo.Estado;
+import org.example.ppaiprueba.vista.RegistrarRevisionFController;
 
 public class CUController {
     private List<EventoSismico> eventosSismicos;
     private List<Estado> estados;
     private Sesion sesion;
+    private RegistrarRevisionFController pantalla;
 
     public void obtenerEventosPendientes() {
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
@@ -42,29 +44,13 @@ public class CUController {
         //TODO: aqui deberia ir el metodo para mostrar a la pantalla, pasando como parametro eventosOrdenados
     }
 
-    /*
-      public void confirmarEvento(EventoSismico evento, Sesion sesion) {
 
-          evento.setEstadoActual("Confirmado"); //Tenemos que pasarle un objeto Estado creado previamente
-          evento.setFechaRevision(LocalDateTime.now());
-          evento.setResponsableRevision(analista);
-
-
-        Estado nuevoEstado = new Estado(Estado.Tipo.EN_REVISION, Estado.Ambito.EVENTO_SISMICO);
-        evento.cambiarEstado(nuevoEstado, sesion.getEmpleadoLogueado());
-    }
-
-
-    public void derivarEvento(EventoSismico evento, String analista) {
-        evento.setEstado("Derivado");
-        evento.setFechaRevision(LocalDateTime.now());
-        evento.setResponsableRevision(analista);
-    }
-      */
-    public void tomarFechaHoraActual(EventoSismico evento){
+    public void tomarFechaHoraActual(EventoSismico evento, boolean band){
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-        buscarEstadoRechazado(evento, fechaHoraActual);
+        if (band){buscarEstadoRechazado(evento, fechaHoraActual);}
+        else {buscarEstadoEnRevision(evento, fechaHoraActual);}
     }
+
 
     public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
         Estado rechazado = null;
@@ -98,6 +84,32 @@ public class CUController {
     public void rechazarEventoSismico(Estado estadoRechazado,Empleado empleadoLogueado, EventoSismico evento, LocalDateTime fechaHoraActual) {
         evento.rechazar(estadoRechazado, empleadoLogueado, fechaHoraActual);
     }
+//TODO: esto me recomendo chat gpt, se tiene que hacer todo eso
+    public void mostrarDatosSismicos (EventoSismico evento) {
+        Map<String, Object> eventosMapeado = new HashMap<>();
+        eventosMapeado.put("Alcance", evento.getAlcance());
+        eventosMapeado.put("fecha y hora ocurrencia", evento.getClasificacion());
+        eventosMapeado.put("Latitud Hipocentro", evento.getOrigen());
+
+    }
+
+    public void buscarDatosSeriesTemporales(EventoSismico evento) {
+        Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
+    }
+
+    /*
+    public void habilitarMapa() {
+        pantalla.habilitarOpcionVerMapa()
 
 
+    }
+*/
+    public void validarDatos(EventoSismico evento) {
+        if (evento.getMagnitud() != null && evento.getClasificacion() != null && evento.getOrigen() != null) {
+            tomarFechaHoraActual(evento, true);
+
+        }
+    }
+
+// TODO: Preguntar como se valida la opcion que tomo el AS
 }

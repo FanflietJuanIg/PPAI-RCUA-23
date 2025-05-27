@@ -107,7 +107,8 @@ public class EventoSismico {
         this.alcance.setDescripcion(descripcion);
         this.alcance.setNombre(nombre);
     }
-    
+
+    //TODO: tecnicamente segun el diagrama de secuancia seria solo get nombre
     public Object[] getAlcance(){
         Object[] vector = new Object[2];
         vector[0] = alcance.getDescripcion();
@@ -127,6 +128,10 @@ public class EventoSismico {
         return vector;
     }
 
+    public String getClasificacion() {
+        return origen.getNombre();
+
+    }
 
     public String getLatitudEpicentro(){
         return latitudEpicentro;
@@ -175,33 +180,31 @@ public class EventoSismico {
 }
 // corregir
 */
-public String[][] buscarDatosSeriesTemp() {
-    String[][] datosSeries = new String[seriesTemporales.size()][2];
+public Object[][] buscarDatosSeriesTemp() {
 
+    Object[][] datosSeries = new String[seriesTemporales.size()][2];
     for (int i = 0; i < seriesTemporales.size(); i++) {
         SerieTemporal serie = seriesTemporales.get(i);
-        Object[][] datosTemp = serie.getDatos(); // se asume que devuelve Object[][]
+        Object[][] datosTemp = serie.getDatos();
+        datosSeries[i][0] = datosTemp[0][0];
+        datosSeries[i][1] = datosTemp[0][1];
 
-        // Convertimos manualmente a String (si estás seguro del tipo)
-        datosSeries[i][0] = datosTemp[0][0].toString();
-        datosSeries[i][1] = datosTemp[0][1].toString();
     }
-
     return clasificarDatosPorEstacion(datosSeries);
 }
 
-    public String[][] clasificarDatosPorEstacion(String[][] datosSeries){
+    //FIXME: cambios por ai, verificar si funcion
+    public Object[][] clasificarDatosPorEstacion(Object[][] datosSeries) {
+        Object[][] copia = Arrays.stream(datosSeries)
+                .map(Object[]::clone)
+                .toArray(Object[][]::new);
 
-        String[][] copia = Arrays.stream(datosSeries)
-                .map(String[]::clone)
-                .toArray(String[][]::new);
-
-        // Ordenar por primera columna (índice 0)
-        Arrays.sort(copia, Comparator.comparing(fila -> fila[0]));
+        Arrays.sort(copia, (fila1, fila2) ->
+                fila1[0].toString().compareTo(fila2[0].toString())
+        );
 
         return copia;
     }
-
 
     public void bloquearParaRevision() {
         // lógica para marcar que el evento está siendo revisado
@@ -215,7 +218,7 @@ public String[][] buscarDatosSeriesTemp() {
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
-
+// TODO: se deberia pasar como parametro el empleado logueado??
     public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
         Empleado empleadoCambio = null;
         for (CambioEstado ce : cambiosEstado) {
