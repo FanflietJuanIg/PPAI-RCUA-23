@@ -39,19 +39,9 @@ public class RegistrarRevisionFController {
     private EventoSismico eventoSeleccionado;
     private CUController cuController;
 
-    @FXML
-    public void initialize11() {
-        colEstacion.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[0].toString()));
-        colValor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[1].toString()));
-    }
 
-    public void mostrarDatosSeries(Object[][] datosClasificados) {
-        ObservableList<Object[]> lista = FXCollections.observableArrayList();
-        for (Object[] fila : datosClasificados) {
-            lista.add(fila);
-        }
-        tablaDatos.setItems(lista);
-    }
+
+
     @FXML
     public void initialize() {
         // Cargar eventos simulados
@@ -281,6 +271,24 @@ public class RegistrarRevisionFController {
         
         listaEventos.getItems().clear();
         listaEventos.getItems().addAll(eventos);
+    }
+
+    @FXML
+    public void mostrarDatosSeries(Object[][] datosClasificados) {
+        colEstacion.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue()[0].toString()));
+
+        colValor.setCellValueFactory(data -> {
+            Object[] valores = (Object[]) data.getValue()[1];
+            String texto = Arrays.toString(valores); // convierte a "[1.1, 2.2, 3.3]"
+            return new SimpleStringProperty(texto);
+        });
+
+        ObservableList<Object[]> lista = FXCollections.observableArrayList();
+        for (Object[] fila : datosClasificados) {
+            lista.add(fila);
+        }
+        tablaDatos.setItems(lista);
     }
 
     @FXML
