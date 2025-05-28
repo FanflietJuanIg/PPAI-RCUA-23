@@ -210,16 +210,6 @@ public class RegistrarRevisionFController {
             //aca cambia el estado a enRevision
             cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
 
-  /*          //Aca busca los datos para
-            Object[] magnitud = eventoSeleccionado.getMagnitud();
-            String descripcion = (String) magnitud[0];
-            double valor = (Double) magnitud[1];
-
-            lblMagnitudDescripcion.setText(descripcion);
-            txtMagnitudNumero.setText(String.valueOf(valor));
-            txtAlcance.setText(eventoSeleccionado.getAlcance());
-            txtOrigen.setText(eventoSeleccionado.getOrigen());
-*/
         }
     }
 
@@ -306,12 +296,14 @@ public class RegistrarRevisionFController {
     private void onConfirmar() {
         cuController.validarDatos(eventoSeleccionado, 2);
         limpiarVista();
+        mostrarConfirmacionCambioEstado("Confirmado");
     }
 
     @FXML
     private void onRechazar() {
         cuController.validarDatos(eventoSeleccionado, 1);
         limpiarVista();
+        mostrarConfirmacionCambioEstado("Rechazado");
     }
 
     @FXML
@@ -328,6 +320,7 @@ public class RegistrarRevisionFController {
         txtMagnitudNumero.clear();
         txtAlcance.clear();
         txtOrigen.clear();
+        imgSismograma.setVisible(false);
     }
 
     public void mostrarSismograma() {
@@ -337,4 +330,13 @@ public class RegistrarRevisionFController {
         imgSismograma.setImage(imagen);
         imgSismograma.setVisible(true);
     }
-}
+
+    public void mostrarConfirmacionCambioEstado(String estado) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confirmación");
+            alert.setHeaderText(null);
+            alert.setContentText("El evento cambió exitosamente al estado: " + estado);
+            alert.showAndWait();
+        }
+    }
+
