@@ -38,6 +38,12 @@
         <Label fx:id="lblOrigen"/>
     </HBox>
 </VBox>
+    <TableView fx:id="tablaDatos" prefWidth="400" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colEstacion" text="Estación" />
+            <TableColumn fx:id="colValor" text="Valor" />
+        </columns>
+    </TableView>
 
 
 <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">

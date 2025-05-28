@@ -1,6 +1,7 @@
 // RegistrarRevisionFController.java
 package org.example.ppaiprueba.vista;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -13,6 +14,9 @@ import java.util.Arrays;
 
 import java.util.List;
 import java.util.Map;
+
+import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class RegistrarRevisionFController {
     @FXML private Button btnIniciarRevision;
@@ -27,10 +31,27 @@ public class RegistrarRevisionFController {
     @FXML private Label lblAlcance;
     @FXML private Label lblOrigen;
     @FXML private Label lblClasificacion;
+    @FXML private TableView<Object[]> tablaDatos;
+    @FXML private TableColumn<Object[], String> colEstacion;
+    @FXML private TableColumn<Object[], String> colValor;
+
 
     private EventoSismico eventoSeleccionado;
     private CUController cuController;
 
+    @FXML
+    public void initialize11() {
+        colEstacion.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[0].toString()));
+        colValor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()[1].toString()));
+    }
+
+    public void mostrarDatosSeries(Object[][] datosClasificados) {
+        ObservableList<Object[]> lista = FXCollections.observableArrayList();
+        for (Object[] fila : datosClasificados) {
+            lista.add(fila);
+        }
+        tablaDatos.setItems(lista);
+    }
     @FXML
     public void initialize() {
         // Cargar eventos simulados
@@ -219,7 +240,8 @@ public class RegistrarRevisionFController {
     }
 
     @FXML
-    public void mostrarDatosSismicos(Map<String, Object> eventoMapeado){
+    public void mostrarDatosSismicos(Map<String, Object> eventoMapeado)
+        {
         lblOrigen.setText(eventoMapeado.get("Clasificacion").toString());
         lblAlcance.setText(eventoMapeado.get("Alcance").toString());
         lblClasificacion.setText(eventoMapeado.get("Origen").toString());

@@ -135,8 +135,10 @@ public class CUController {
         buscarDatosSeriesTemporales(evento);
     }
 
+
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
+        pantalla.mostrarDatosSeries(eventosClasificados);
         // TODO: eventosClasificados tecnicamente tiene la info de las series temporales y todo eso, habria que mostrarlos??
         //TODO: simular SISMOGRAMA
         habilitarMapa(evento);
