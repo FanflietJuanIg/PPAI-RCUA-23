@@ -37,60 +37,7 @@ public class EventoSismico {
         this.longitudHipocentro = longitudHipocentro;
         this.seriesTemporales = new ArrayList<>(seriesTemporales);
     }
-// get y set a otros objetos cambiarlos
-    /*
-    // Getters y Setters
-    public double getMagnitud() {
-        return magnitud;
-    }
 
-    public void setMagnitud(double magnitud) {
-        this.magnitud = magnitud;
-    }
-
-    public String getAlcance() {
-        return alcance;
-    }
-
-    public void setAlcance(String alcance) {
-        this.alcance = alcance;
-    }
-
-    public String getOrigen() {
-        return origen;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    // Esto va en Cambio de Estado =)
-    /*public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public LocalDateTime getFechaRevision() {
-        return fechaRevision;
-    }
-
-    public void setFechaRevision(LocalDateTime fechaRevision) {
-        this.fechaRevision = fechaRevision;
-    }
-
-    public String getResponsableRevision() {
-        return responsableRevision;
-    }
-
-    public void setResponsableRevision(String responsableRevision) {
-        this.responsableRevision = responsableRevision;
-    }
-*/
-
-    // Intento hacer un set de magnitud
     public void setMagnitud(String descripcion, Double valor) {
         this.magnitud.setDescripcionMagnitud(descripcion);
         this.magnitud.setNumero(valor);
@@ -108,7 +55,6 @@ public class EventoSismico {
         this.alcance.setNombre(nombre);
     }
 
-    //TODO: tecnicamente segun el diagrama de secuancia seria solo get nombre
     public String getAlcance(){
         return alcance.getNombre();
     }
@@ -159,21 +105,7 @@ public class EventoSismico {
     public boolean esPendienteRevision() {
         return estadoActual.esPendienteRevision();
     }
-/*
-    public Object[][] buscarDatosSeriesTemp() {
 
-    Object[][] datosSeries = new String[seriesTemporales.size()][2];
-    for (int i = 0; i < seriesTemporales.size(); i++) {
-        SerieTemporal serie = seriesTemporales.get(i);
-        Object[][] datosTemp = serie.getDatos();
-        datosSeries[i][0] = datosTemp[0][0];
-        datosSeries[i][1] = datosTemp[0][1];
-
-        }
-    return clasificarDatosPorEstacion(datosSeries);
-}
-// corregir
-*/
 public Object[][] buscarDatosSeriesTemp() {
 
     Object[][] datosSeries = new Object[seriesTemporales.size()][2];
@@ -234,7 +166,15 @@ public Object[][] buscarDatosSeriesTemp() {
         newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
 
-
+    public void confirmar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(fechaHoraActual);
+                break;
+            }
+        }
+        newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
+    }
 
 }
 

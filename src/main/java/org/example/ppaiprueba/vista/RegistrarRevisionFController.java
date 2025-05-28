@@ -196,12 +196,13 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(true);
     }
 
+    //TODO: No tendria que resolver mas el controlador (sino cambiar diagrama)
     @FXML
     private void onSeleccionarEvento() {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
         if (eventoSeleccionado != null) {
             // Lógica ficticia para bloqueo y obtención de datos
-            cuController.tomarFechaHoraActual(eventoSeleccionado, false);
+            cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
             Object[] magnitud = eventoSeleccionado.getMagnitud();
             String descripcion = (String) magnitud[0];
             double valor = (Double) magnitud[1];
@@ -272,21 +273,21 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onGuardarEdicion() {
-//        eventoSeleccionado.setMagnitud( "descripcion",Double.parseDouble(txtMagnitud.getText())); //hay que agregar la descripcion
-//        eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
-//        eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
+        eventoSeleccionado.setMagnitud( "descripcion",Double.parseDouble(txtMagnitudNumero.getText())); //hay que agregar la descripcion
+        eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
+        eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
 
-    //TODO: Tendria que ser un solo metodo que tome la opcion seleccionada y la pase a la funcion tomarOpcion en el controllador, esa funcion va a decidir si se rechaza, deriva o confirma
+
     @FXML
     private void onConfirmar() {
-//        cuController.confirmarEvento(eventoSeleccionado, "Analista 1");
-//        limpiarVista();
+        cuController.validarDatos(eventoSeleccionado, 2);
+        limpiarVista();
     }
 
     @FXML
     private void onRechazar() {
-        cuController.validarDatos(eventoSeleccionado);
+        cuController.validarDatos(eventoSeleccionado, 1);
         limpiarVista();
     }
 
