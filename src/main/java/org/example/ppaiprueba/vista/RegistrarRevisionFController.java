@@ -209,7 +209,6 @@ public class RegistrarRevisionFController {
             // Lógica ficticia para bloqueo y obtención de datos
             //aca cambia el estado a enRevision
             cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
-
         }
     }
 
