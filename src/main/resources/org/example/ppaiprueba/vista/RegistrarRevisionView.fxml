@@ -15,17 +15,34 @@
 
     <VBox fx:id="formularioEdicion" spacing="5" visible="false">
         <Label text="Magnitud" />
-        <TextField fx:id="txtMagnitud" />
+        <Label fx:id="lblMagnitudDescripcion" />
+        <TextField fx:id="txtMagnitudNumero" />
         <Label text="Alcance" />
         <TextField fx:id="txtAlcance" />
         <Label text="Origen" />
         <TextField fx:id="txtOrigen" />
         <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
     </VBox>
+<VBox>
+    <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
+    <HBox spacing="10">
+        <Label text="Magnitud:"/>
+        <Label fx:id="lblClasificacion"/>
+    </HBox>
+    <HBox spacing="10">
+        <Label text="Alcance:"/>
+        <Label fx:id="lblAlcance"/>
+    </HBox>
+    <HBox spacing="10">
+        <Label text="Origen:"/>
+        <Label fx:id="lblOrigen"/>
+    </HBox>
+</VBox>
 
-    <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
+
+<HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
         <Button text="Confirmar" onAction="#onConfirmar" />
         <Button text="Rechazar" onAction="#onRechazar" />
         <Button text="Derivar" onAction="#onDerivar" />
-    </HBox>
+</HBox>
 </VBox>

@@ -17,7 +17,14 @@ public class CUController {
     private Sesion sesion;
     private RegistrarRevisionFController pantalla;
 
-    public void obtenerEventosPendientes() {
+    public CUController(List<EventoSismico> eventosSismicos, List<Estado> estados, Sesion sesion, RegistrarRevisionFController pantalla){
+        this.eventosSismicos = eventosSismicos;
+        this.estados = estados;
+        this.sesion = sesion;
+        this.pantalla = pantalla;
+    }
+
+    public void buscarEventosSismicos() {
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
                 .filter(EventoSismico::esPendienteRevision)
                 .filter(EventoSismico::esAutodetectado)
@@ -32,7 +39,8 @@ public class CUController {
                 .sorted(Comparator.comparing(EventoSismico::getFechaHoraOcurrencia).reversed())
                 .map(e -> {
                     Map<String, Object> eventosMapeado = new HashMap<>();
-                    eventosMapeado.put("magnitud", e.getMagnitud());
+                    eventosMapeado.put("Evento", e);
+                    eventosMapeado.put("Magnitud", e.getMagnitud());
                     eventosMapeado.put("fecha y hora ocurrencia", e.getFechaHoraOcurrencia());
                     eventosMapeado.put("Latitud Hipocentro", e.getLatitudHipocentro());
                     eventosMapeado.put("Longitud Hipocentro", e.getLongitudHipocentro());
@@ -41,7 +49,7 @@ public class CUController {
                     return eventosMapeado;
                 })
                 .toList();
-        //TODO: aqui deberia ir el metodo para mostrar a la pantalla, pasando como parametro eventosOrdenados
+        pantalla.mostrarEventos(eventosOrdenados);
     }
 
 
@@ -71,10 +79,12 @@ public class CUController {
                 break;
             }
         }
+        bloquearEventoParaRevision(enRevision, evento, fechaHoraActual);
     }
 
     public void bloquearEventoParaRevision(Estado enRevision, EventoSismico evento, LocalDateTime fechaHoraActual){
             evento.bloquearParaRevision(enRevision, fechaHoraActual);
+            buscarDatosSismicos(evento);
     }
 
     public void buscarEmpleadoLogeado(EventoSismico evento, LocalDateTime fechaHoraActual ,Estado rechazado){
@@ -85,16 +95,29 @@ public class CUController {
         evento.rechazar(estadoRechazado, empleadoLogueado, fechaHoraActual);
     }
 //TODO: esto me recomendo chat gpt, se tiene que hacer todo eso
-    public void mostrarDatosSismicos (EventoSismico evento) {
+    public void buscarDatosSismicos (EventoSismico evento) {
         Map<String, Object> eventosMapeado = new HashMap<>();
         eventosMapeado.put("Alcance", evento.getAlcance());
-        eventosMapeado.put("fecha y hora ocurrencia", evento.getClasificacion());
-        eventosMapeado.put("Latitud Hipocentro", evento.getOrigen());
-
+        eventosMapeado.put("Clasificacion", evento.getClasificacion());
+        eventosMapeado.put("Origen", evento.getOrigen());
+        pantalla.mostrarDatosSismicos(eventosMapeado);
+        buscarDatosSeriesTemporales(evento);
     }
 
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
+        //TODO: simular SISMOGRAMA
+        habilitarMapa();
+
+    }
+
+    public void habilitarMapa(){
+        pantalla.habilitarOpcionVerMapa();
+        habilitarOpcionModificarDatos();
+    }
+
+    public void habilitarOpcionModificarDatos(){
+        pantalla.habilitarOpcionModificarDatos();
     }
 
     /*

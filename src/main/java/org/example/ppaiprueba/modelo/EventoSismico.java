@@ -109,11 +109,8 @@ public class EventoSismico {
     }
 
     //TODO: tecnicamente segun el diagrama de secuancia seria solo get nombre
-    public Object[] getAlcance(){
-        Object[] vector = new Object[2];
-        vector[0] = alcance.getDescripcion();
-        vector[1] = alcance.getNombre();
-        return vector;
+    public String getAlcance(){
+        return alcance.getNombre();
     }
 
     public void setOrigen(String descripcion, String nombre) {
@@ -121,11 +118,8 @@ public class EventoSismico {
         this.alcance.setNombre(nombre);
     }
 
-    public Object[] getOrigen(){
-        Object[] vector = new Object[2];
-        vector[0] = origen.getDescripcion();
-        vector[1] = origen.getNombre();
-        return vector;
+    public String getOrigen(){
+        return origen.getNombre();
     }
 
     public String getClasificacion() {
