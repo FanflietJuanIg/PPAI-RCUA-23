@@ -12,7 +12,8 @@ public class Estado {
         PENDIENTE_REVISION,
         EN_REVISION,
         RECHAZADO,
-        AUTODETECTADO;
+        AUTODETECTADO,
+        CONFIRMADO;
     }
 
     public enum Ambito {
@@ -67,6 +68,10 @@ public class Estado {
 
     public boolean esRechazado() {
         return tipo == Tipo.RECHAZADO;
+    }
+
+    public boolean esConfirmado() {
+        return tipo == Tipo.CONFIRMADO;
     }
 
     public boolean esAmbitoEventoSismico(){

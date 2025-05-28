@@ -5,6 +5,7 @@ module org.example.ppaiprueba {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
+    requires java.desktop;
 
     exports org.example.ppaiprueba.vista;
     exports org.example.ppaiprueba.control;

@@ -37,9 +37,7 @@ public class EventoSismico {
         this.longitudHipocentro = longitudHipocentro;
         this.seriesTemporales = new ArrayList<>(seriesTemporales);
     }
-// get y set a otros objetos cambiarlos
 
-    // Intento hacer un set de magnitud
     public void setMagnitud(String descripcion, Double valor) {
         this.magnitud.setDescripcionMagnitud(descripcion);
         this.magnitud.setNumero(valor);
@@ -57,12 +55,8 @@ public class EventoSismico {
         this.alcance.setNombre(nombre);
     }
 
-    //TODO: tecnicamente segun el diagrama de secuancia seria solo get nombre
-    public Object[] getAlcance(){
-        Object[] vector = new Object[2];
-        vector[0] = alcance.getDescripcion();
-        vector[1] = alcance.getNombre();
-        return vector;
+    public String getAlcance(){
+        return alcance.getNombre();
     }
 
     public void setOrigen(String descripcion, String nombre) {
@@ -70,11 +64,8 @@ public class EventoSismico {
         this.alcance.setNombre(nombre);
     }
 
-    public Object[] getOrigen(){
-        Object[] vector = new Object[2];
-        vector[0] = origen.getDescripcion();
-        vector[1] = origen.getNombre();
-        return vector;
+    public String getOrigen(){
+        return origen.getNombre();
     }
 
     public String getClasificacion() {
@@ -117,7 +108,7 @@ public class EventoSismico {
 
 public Object[][] buscarDatosSeriesTemp() {
 
-    Object[][] datosSeries = new String[seriesTemporales.size()][2];
+    Object[][] datosSeries = new Object[seriesTemporales.size()][2];
     for (int i = 0; i < seriesTemporales.size(); i++) {
         SerieTemporal serie = seriesTemporales.get(i);
         Object[][] datosTemp = serie.getDatos();
@@ -141,11 +132,6 @@ public Object[][] buscarDatosSeriesTemp() {
         return copia;
     }
 
-    public void bloquearParaRevision() {
-        // lógica para marcar que el evento está siendo revisado
-        System.out.println("Evento bloqueado para revisión");
-    }
-
 //cambiar el nombre del metodo en el diagrama de secuencia
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
@@ -153,18 +139,30 @@ public Object[][] buscarDatosSeriesTemp() {
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
-// TODO: se deberia pasar como parametro el empleado logueado??
+
     public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
         Empleado empleadoCambio = null;
+        for (CambioEstado ce : cambiosEstado) {
+            if (ce.esActual()) {
+                ce.setFechaHoraFin(fechaHoraActual);
+                empleadoCambio = ce.getResponsable();
+                break;
+            }
+        }
+        newCambioEstado(fechaHoraActual,estado, empleadoCambio);
+    }
+
+    public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
                 break;
             }
         }
-        newCambioEstado(fechaHoraActual,estado, empleadoCambio);
+        newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
-    public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
+
+    public void confirmar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
