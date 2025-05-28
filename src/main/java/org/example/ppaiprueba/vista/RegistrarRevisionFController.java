@@ -202,7 +202,10 @@ public class RegistrarRevisionFController {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
         if (eventoSeleccionado != null) {
             // Lógica ficticia para bloqueo y obtención de datos
+            //aca cambia el estado a enRevision
             cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
+
+  /*          //Aca busca los datos para
             Object[] magnitud = eventoSeleccionado.getMagnitud();
             String descripcion = (String) magnitud[0];
             double valor = (Double) magnitud[1];
@@ -211,9 +214,10 @@ public class RegistrarRevisionFController {
             txtMagnitudNumero.setText(String.valueOf(valor));
             txtAlcance.setText(eventoSeleccionado.getAlcance());
             txtOrigen.setText(eventoSeleccionado.getOrigen());
-
+*/
         }
     }
+
     @FXML
     public void mostrarDatosSismicos(Map<String, Object> eventoMapeado){
         lblOrigen.setText(eventoMapeado.get("Clasificacion").toString());
@@ -224,7 +228,7 @@ public class RegistrarRevisionFController {
 
     //TODO: Preguntar a juani como hace
     @FXML
-    public void mostrarEventos(List<Map<String, Object>> eventos) {
+    public void mostrarEventosSismicos(List<Map<String, Object>> eventos) {
         if (eventos == null) {
             throw new IllegalArgumentException("La lista de eventos no puede ser null");
         }
@@ -256,13 +260,24 @@ public class RegistrarRevisionFController {
         listaEventos.getItems().clear();
         listaEventos.getItems().addAll(eventos);
     }
+
     @FXML
     public void habilitarOpcionVerMapa() {
         btnVisualizarMapa.setVisible(true);
     }
 
     @FXML
-    public void habilitarOpcionModificarDatos(){
+    public void habilitarOpcionModificarDatos(EventoSismico eventoSeleccionado) {
+
+        Object[] magnitud = eventoSeleccionado.getMagnitud();
+        String descripcion = (String) magnitud[0];
+        double valor = (Double) magnitud[1];
+
+        lblMagnitudDescripcion.setText(descripcion);
+        txtMagnitudNumero.setText(String.valueOf(valor));
+        txtAlcance.setText(eventoSeleccionado.getAlcance());
+        txtOrigen.setText(eventoSeleccionado.getOrigen());
+
         formularioEdicion.setVisible(true);
     }
 
@@ -277,7 +292,6 @@ public class RegistrarRevisionFController {
         eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
         eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
-
 
     @FXML
     private void onConfirmar() {

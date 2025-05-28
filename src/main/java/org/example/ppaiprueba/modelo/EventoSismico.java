@@ -132,11 +132,6 @@ public Object[][] buscarDatosSeriesTemp() {
         return copia;
     }
 
-    public void bloquearParaRevision() {
-        // lógica para marcar que el evento está siendo revisado
-        System.out.println("Evento bloqueado para revisión");
-    }
-
 //cambiar el nombre del metodo en el diagrama de secuencia
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
@@ -144,7 +139,7 @@ public Object[][] buscarDatosSeriesTemp() {
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
-// TODO: se deberia pasar como parametro el empleado logueado??
+
     public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
         Empleado empleadoCambio = null;
         for (CambioEstado ce : cambiosEstado) {
@@ -156,6 +151,7 @@ public Object[][] buscarDatosSeriesTemp() {
         }
         newCambioEstado(fechaHoraActual,estado, empleadoCambio);
     }
+
     public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
@@ -177,75 +173,3 @@ public Object[][] buscarDatosSeriesTemp() {
     }
 
 }
-
-/*
-    //Registra un cambio de estado en el evento.
-
-    public void agregarCambioEstado(CambioEstado cambio) {
-        for (CambioEstado ce : cambiosEstado) {
-            if (ce.esActual()) {
-                ce.setFechaHoraFin(LocalDateTime.now());
-            }
-        }
-        cambiosEstado.add(cambio);
-        this.estadoActual = cambio.getEstado();
-    }
-
-     //Registra un cambio de estado en el evento.
-
-public void agregarCambioEstado(CambioEstado cambio) {
-    for (CambioEstado ce : cambiosEstado) {
-        if (ce.esActual()) {
-            ce.setFechaHoraFin(LocalDateTime.now());
-        }
-    }
-    cambiosEstado.add(cambio);
-    this.estadoActual = cambio.getEstado();
-}
-
-    public void agregarCambioEstado(CambioEstado cambio) {
-        cerrarEstadoActual(LocalDateTime.now());
-        cambiosEstado.add(cambio);
-    }
-
-
-
-
-
-
-    public boolean estaEnRevision() {
-        return estadoActual.getNombre().equalsIgnoreCase("En Revision");
-    }
-
-    public boolean estaRechazado() {
-        return estadoActual.getNombre().equalsIgnoreCase("Rechazado");
-    }
-
-
-        }
-        cambiosEstado.add(cambio);
-        this.estadoActual = cambio.getEstado();
-    }
-*/
-
-
-
-/*
-
-
-
-    @Override
-    public String toString() {
-        return "Magnitud " + magnitud + " - Origen: " + origen;
-    }
-
-    // Datos simulados
-    public static List<EventoSismico> generarEventosSimulados() {
-        List<EventoSismico> lista = new ArrayList<>();
-        lista.add(new EventoSismico(5.0, "Alta", "Tectónico", "Pendiente",LocalDateTime.now().minusHours(3), pendiente));
-        lista.add(new EventoSismico(4.3, "Media", "Volcánico", "Pendiente",LocalDateTime.now().minusHours(6), pendiente));
-        lista.add(new EventoSismico(3.2, "Local", "Argentina", "Confirmado")); // Este no aparecerá
-        return lista;
-    }
-}
-*/

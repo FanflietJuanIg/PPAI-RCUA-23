@@ -53,9 +53,8 @@ public class CUController {
                     return eventosMapeado;
                 })
                 .toList();
-        pantalla.mostrarEventos(eventosOrdenados);
+        pantalla.mostrarEventosSismicos(eventosOrdenados);
     }
-
 
     public void tomarFechaHoraActual(EventoSismico evento, double num){
         LocalDateTime fechaHoraActual = LocalDateTime.now();
@@ -69,7 +68,6 @@ public class CUController {
             buscarEstadoEnRevision(evento, fechaHoraActual);
         }
     }
-
 
     public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
         Estado rechazado = null;
@@ -141,17 +139,16 @@ public class CUController {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
         // TODO: eventosClasificados tecnicamente tiene la info de las series temporales y todo eso, habria que mostrarlos??
         //TODO: simular SISMOGRAMA
-        habilitarMapa();
-
+        habilitarMapa(evento);
     }
 
-    public void habilitarMapa(){
+    public void habilitarMapa(EventoSismico evento) {
         pantalla.habilitarOpcionVerMapa();
-        habilitarOpcionModificarDatos();
+        habilitarOpcionModificarDatos(evento);
     }
 
-    public void habilitarOpcionModificarDatos(){
-        pantalla.habilitarOpcionModificarDatos();
+    public void habilitarOpcionModificarDatos(EventoSismico evento) {
+        pantalla.habilitarOpcionModificarDatos(evento);
         habilitarOpcionCambioEstado();
     }
 
