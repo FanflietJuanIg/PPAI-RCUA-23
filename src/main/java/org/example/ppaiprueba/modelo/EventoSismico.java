@@ -174,9 +174,4 @@ public Object[][] buscarDatosSeriesTemp() {
         newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
 
-    public void getUbicacion() {
-
-    }
-
-
 }
