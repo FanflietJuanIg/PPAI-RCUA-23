@@ -267,7 +267,7 @@ public class RegistrarRevisionFController {
     }
 
     @FXML
-    public void habilitarOpcionModificarDatos(EventoSismico eventoSeleccionado) {
+    public void mostrarOpcionModificarDatos(EventoSismico eventoSeleccionado) {
 
         Object[] magnitud = eventoSeleccionado.getMagnitud();
         String descripcion = (String) magnitud[0];

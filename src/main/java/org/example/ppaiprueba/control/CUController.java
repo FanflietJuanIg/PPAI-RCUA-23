@@ -148,7 +148,7 @@ public class CUController {
     }
 
     public void habilitarOpcionModificarDatos(EventoSismico evento) {
-        pantalla.habilitarOpcionModificarDatos(evento);
+        pantalla.mostrarOpcionModificarDatos(evento);
         habilitarOpcionCambioEstado();
     }
 
