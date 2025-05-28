@@ -148,7 +148,6 @@ public class CUController {
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
         llamarCUGenerarSismograma();
-        //TODO: simular SISMOGRAMA
         habilitarMapa(evento);
     }
 
