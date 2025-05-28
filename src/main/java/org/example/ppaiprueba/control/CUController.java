@@ -71,6 +71,7 @@ public class CUController {
                 break;
             }
         }
+        bloquearEventoParaRevision(enRevision, evento, fechaHoraActual);
     }
 
     public void bloquearEventoParaRevision(Estado enRevision, EventoSismico evento, LocalDateTime fechaHoraActual){

@@ -38,57 +38,6 @@ public class EventoSismico {
         this.seriesTemporales = new ArrayList<>(seriesTemporales);
     }
 // get y set a otros objetos cambiarlos
-    /*
-    // Getters y Setters
-    public double getMagnitud() {
-        return magnitud;
-    }
-
-    public void setMagnitud(double magnitud) {
-        this.magnitud = magnitud;
-    }
-
-    public String getAlcance() {
-        return alcance;
-    }
-
-    public void setAlcance(String alcance) {
-        this.alcance = alcance;
-    }
-
-    public String getOrigen() {
-        return origen;
-    }
-
-    public void setOrigen(String origen) {
-        this.origen = origen;
-    }
-
-    // Esto va en Cambio de Estado =)
-    /*public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public LocalDateTime getFechaRevision() {
-        return fechaRevision;
-    }
-
-    public void setFechaRevision(LocalDateTime fechaRevision) {
-        this.fechaRevision = fechaRevision;
-    }
-
-    public String getResponsableRevision() {
-        return responsableRevision;
-    }
-
-    public void setResponsableRevision(String responsableRevision) {
-        this.responsableRevision = responsableRevision;
-    }
-*/
 
     // Intento hacer un set de magnitud
     public void setMagnitud(String descripcion, Double valor) {
@@ -165,21 +114,7 @@ public class EventoSismico {
     public boolean esPendienteRevision() {
         return estadoActual.esPendienteRevision();
     }
-/*
-    public Object[][] buscarDatosSeriesTemp() {
 
-    Object[][] datosSeries = new String[seriesTemporales.size()][2];
-    for (int i = 0; i < seriesTemporales.size(); i++) {
-        SerieTemporal serie = seriesTemporales.get(i);
-        Object[][] datosTemp = serie.getDatos();
-        datosSeries[i][0] = datosTemp[0][0];
-        datosSeries[i][1] = datosTemp[0][1];
-
-        }
-    return clasificarDatosPorEstacion(datosSeries);
-}
-// corregir
-*/
 public Object[][] buscarDatosSeriesTemp() {
 
     Object[][] datosSeries = new String[seriesTemporales.size()][2];
@@ -224,7 +159,6 @@ public Object[][] buscarDatosSeriesTemp() {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
-                empleadoCambio = ce.getResponsable();
                 break;
             }
         }
@@ -240,78 +174,9 @@ public Object[][] buscarDatosSeriesTemp() {
         newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
 
+    public void getUbicacion() {
+
+    }
 
 
 }
-
-/*
-    //Registra un cambio de estado en el evento.
-
-    public void agregarCambioEstado(CambioEstado cambio) {
-        for (CambioEstado ce : cambiosEstado) {
-            if (ce.esActual()) {
-                ce.setFechaHoraFin(LocalDateTime.now());
-            }
-        }
-        cambiosEstado.add(cambio);
-        this.estadoActual = cambio.getEstado();
-    }
-
-     //Registra un cambio de estado en el evento.
-
-public void agregarCambioEstado(CambioEstado cambio) {
-    for (CambioEstado ce : cambiosEstado) {
-        if (ce.esActual()) {
-            ce.setFechaHoraFin(LocalDateTime.now());
-        }
-    }
-    cambiosEstado.add(cambio);
-    this.estadoActual = cambio.getEstado();
-}
-
-    public void agregarCambioEstado(CambioEstado cambio) {
-        cerrarEstadoActual(LocalDateTime.now());
-        cambiosEstado.add(cambio);
-    }
-
-
-
-
-
-
-    public boolean estaEnRevision() {
-        return estadoActual.getNombre().equalsIgnoreCase("En Revision");
-    }
-
-    public boolean estaRechazado() {
-        return estadoActual.getNombre().equalsIgnoreCase("Rechazado");
-    }
-
-
-        }
-        cambiosEstado.add(cambio);
-        this.estadoActual = cambio.getEstado();
-    }
-*/
-
-
-
-/*
-
-
-
-    @Override
-    public String toString() {
-        return "Magnitud " + magnitud + " - Origen: " + origen;
-    }
-
-    // Datos simulados
-    public static List<EventoSismico> generarEventosSimulados() {
-        List<EventoSismico> lista = new ArrayList<>();
-        lista.add(new EventoSismico(5.0, "Alta", "Tectónico", "Pendiente",LocalDateTime.now().minusHours(3), pendiente));
-        lista.add(new EventoSismico(4.3, "Media", "Volcánico", "Pendiente",LocalDateTime.now().minusHours(6), pendiente));
-        lista.add(new EventoSismico(3.2, "Local", "Argentina", "Confirmado")); // Este no aparecerá
-        return lista;
-    }
-}
-*/
