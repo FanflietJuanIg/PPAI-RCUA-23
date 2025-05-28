@@ -29,17 +29,18 @@ public class SerieTemporal {
         vectorDatos[3] = String.valueOf(frecuenciaMuestreo);
         vectorDatos[4] = obtenerMuestras();
 
-        Object[][] vectorID = new String[1][2];
+        Object[][] vectorID = new Object[1][2];
         vectorID[0][0] = sismografo.getIdEstacionSismologica();
         vectorID[0][1] = vectorDatos;
 
         return vectorID;
     }
     public Object[] obtenerMuestras(){
-        Object[] datosMuestras = new String[muestraSismicas.size()];
+        Object[] datosMuestras = new Object[muestraSismicas.size()];
         for (int i = 0; i < muestraSismicas.size(); i++){
             MuestraSismica muestra = muestraSismicas.get(i);
             datosMuestras[i] = muestra.getDatos();
+            System.out.println("DatosMuestras: " + datosMuestras[i]);
         }
         return datosMuestras;
     }

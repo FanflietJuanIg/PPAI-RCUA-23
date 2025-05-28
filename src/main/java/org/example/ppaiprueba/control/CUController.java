@@ -25,12 +25,16 @@ public class CUController {
     }
 
     public void buscarEventosSismicos() {
+        // Agrega logging para debug
+        System.out.println("Total eventos: " + eventosSismicos.size());
+        
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
-                .filter(EventoSismico::esPendienteRevision)
-                .filter(EventoSismico::esAutodetectado)
-                .toList();
+                .filter(evento -> evento.esAutodetectado() ||
+                                evento.esPendienteRevision())
+                .collect(Collectors.toList());
+                
+        System.out.println("Eventos pendientes encontrados: " + eventosPendientes.size());
         ordenarEventos(eventosPendientes);
-
     }
 // esto es un map de los datos que se le van a pasar a la pantalla, no todos los datos del evento deben ser visualizados
 // uso map para no tener que crear otra clase lo cual causaria inconsistencia con el modelo
@@ -111,6 +115,9 @@ public class CUController {
 
     }
 
+    public void habilitarOpcionCambioEstado(){
+        pantalla.mostrarOpcionCambioEstado();
+    }
     public void habilitarMapa(){
         pantalla.habilitarOpcionVerMapa();
         habilitarOpcionModificarDatos();
@@ -118,6 +125,7 @@ public class CUController {
 
     public void habilitarOpcionModificarDatos(){
         pantalla.habilitarOpcionModificarDatos();
+        habilitarOpcionCambioEstado();
     }
 
     /*

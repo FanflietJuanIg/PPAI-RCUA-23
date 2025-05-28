@@ -187,7 +187,13 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onIniciarRevision() {
+        System.out.println("Botón Iniciar Revisión presionado");
         cuController.buscarEventosSismicos();
+
+    }
+
+    public void mostrarOpcionCambioEstado(){
+        opcionesRevision.setVisible(true);
     }
 
     @FXML
@@ -196,7 +202,6 @@ public class RegistrarRevisionFController {
         if (eventoSeleccionado != null) {
             // Lógica ficticia para bloqueo y obtención de datos
             cuController.tomarFechaHoraActual(eventoSeleccionado, false);
-            opcionesRevision.setVisible(true);
             Object[] magnitud = eventoSeleccionado.getMagnitud();
             String descripcion = (String) magnitud[0];
             double valor = (Double) magnitud[1];
@@ -231,13 +236,15 @@ public class RegistrarRevisionFController {
                     setText(null);
                 } else {
                     // Aquí seleccionas solo los atributos que quieres mostrar
-                    String displayText = String.format("%s - %s", 
+                    Object[] magnitud = (Object[])item.get("Magnitud");
+                    String displayText = String.format("Fecha: %s - %s - %s - %s - %s - Magnitud: %s %s",
                         item.get("fecha y hora ocurrencia"),
                         item.get("Latitud Hipocentro"),
                         item.get("Longitud Hipocentro"),
                         item.get("Latitud Epicentro"),
                         item.get("Longitud Epicentro"),
-                        item.get("Magnitud")
+                        magnitud[0],
+                        magnitud[1]
                         // No incluimos el atributo que queremos ocultar
                     );
                     setText(displayText);
@@ -265,16 +272,16 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onGuardarEdicion() {
-        eventoSeleccionado.setMagnitud( "descripcion",Double.parseDouble(txtMagnitud.getText())); //hay que agregar la descripcion
-        eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
-        eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
+//        eventoSeleccionado.setMagnitud( "descripcion",Double.parseDouble(txtMagnitud.getText())); //hay que agregar la descripcion
+//        eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
+//        eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
 
     //TODO: Tendria que ser un solo metodo que tome la opcion seleccionada y la pase a la funcion tomarOpcion en el controllador, esa funcion va a decidir si se rechaza, deriva o confirma
     @FXML
     private void onConfirmar() {
-        cuController.confirmarEvento(eventoSeleccionado, "Analista 1");
-        limpiarVista();
+//        cuController.confirmarEvento(eventoSeleccionado, "Analista 1");
+//        limpiarVista();
     }
 
     @FXML
@@ -285,8 +292,8 @@ public class RegistrarRevisionFController {
 
     @FXML
     private void onDerivar() {
-        cuController.derivarEvento(eventoSeleccionado, "Analista 1");
-        limpiarVista();
+//        cuController.derivarEvento(eventoSeleccionado, "Analista 1");
+//        limpiarVista();
     }
 
     private void limpiarVista() {
@@ -294,7 +301,7 @@ public class RegistrarRevisionFController {
         btnVisualizarMapa.setVisible(false);
         formularioEdicion.setVisible(false);
         opcionesRevision.setVisible(false);
-        txtMagnitud.clear();
+        txtMagnitudNumero.clear();
         txtAlcance.clear();
         txtOrigen.clear();
     }

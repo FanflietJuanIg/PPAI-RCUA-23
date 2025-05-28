@@ -26,7 +26,7 @@
 <VBox>
     <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
     <HBox spacing="10">
-        <Label text="Magnitud:"/>
+        <Label text="Clasificacion:"/>
         <Label fx:id="lblClasificacion"/>
     </HBox>
     <HBox spacing="10">

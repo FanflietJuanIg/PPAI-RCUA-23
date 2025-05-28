@@ -176,7 +176,7 @@ public class EventoSismico {
 */
 public Object[][] buscarDatosSeriesTemp() {
 
-    Object[][] datosSeries = new String[seriesTemporales.size()][2];
+    Object[][] datosSeries = new Object[seriesTemporales.size()][2];
     for (int i = 0; i < seriesTemporales.size(); i++) {
         SerieTemporal serie = seriesTemporales.get(i);
         Object[][] datosTemp = serie.getDatos();
