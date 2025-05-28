@@ -1,48 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.ppaiprueba.vista.RegistrarRevisionFController"
-      spacing="10" alignment="TOP_CENTER" style="-fx-padding: 20">
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.ppaiprueba.vista.RegistrarRevisionFController"
+            fitToWidth="true"
+            fitToHeight="true"
+            style="-fx-padding: 20">
 
-    <Button fx:id="btnIniciarRevision" text="Iniciar Revisión" onAction="#onIniciarRevision" />
+    <content>
+        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 10">
 
-    <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" />
+            <!-- Botón principal -->
+            <Button fx:id="btnIniciarRevision" text="Iniciar Revisión" onAction="#onIniciarRevision" />
 
-    <Button fx:id="btnVisualizarMapa" text="Visualizar Mapa" onAction="#onVerMapa" visible="false" />
+            <!-- Contenedor horizontal para lista y sismograma -->
+            <HBox spacing="20" alignment="TOP_CENTER">
+                <!-- Lista de eventos -->
+                <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" prefWidth="500"/>
 
-    <VBox fx:id="formularioEdicion" spacing="5" visible="false">
-        <Label text="Magnitud" />
-        <Label fx:id="lblMagnitudDescripcion" />
-        <TextField fx:id="txtMagnitudNumero" />
-        <Label text="Alcance" />
-        <TextField fx:id="txtAlcance" />
-        <Label text="Origen" />
-        <TextField fx:id="txtOrigen" />
-        <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
-    </VBox>
-<VBox>
-    <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
-    <HBox spacing="10">
-        <Label text="Clasificacion:"/>
-        <Label fx:id="lblClasificacion"/>
-    </HBox>
-    <HBox spacing="10">
-        <Label text="Alcance:"/>
-        <Label fx:id="lblAlcance"/>
-    </HBox>
-    <HBox spacing="10">
-        <Label text="Origen:"/>
-        <Label fx:id="lblOrigen"/>
-    </HBox>
-</VBox>
+                <!-- Imagen del sismograma -->
+                <ImageView fx:id="imgSismograma" fitWidth="300" preserveRatio="true" visible="false"/>
+            </HBox>
 
+            <!-- Botón para mapa -->
+            <Button fx:id="btnVisualizarMapa" text="Visualizar Mapa" onAction="#onVerMapa" visible="false" />
 
-<HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
-        <Button text="Confirmar" onAction="#onConfirmar" />
-        <Button text="Rechazar" onAction="#onRechazar" />
-        <Button text="Derivar" onAction="#onDerivar" />
-</HBox>
-</VBox>
+            <!-- Formulario de edición -->
+            <VBox fx:id="formularioEdicion" spacing="5" visible="false" maxWidth="600">
+                <Label text="Magnitud" />
+                <Label fx:id="lblMagnitudDescripcion" />
+                <TextField fx:id="txtMagnitudNumero" />
+                <Label text="Alcance" />
+                <TextField fx:id="txtAlcance" />
+                <Label text="Origen" />
+                <TextField fx:id="txtOrigen" />
+                <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
+            </VBox>
+
+            <!-- Detalles del evento -->
+            <VBox maxWidth="600">
+                <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
+                <HBox spacing="10">
+                    <Label text="Clasificación:"/>
+                    <Label fx:id="lblClasificacion"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Alcance:"/>
+                    <Label fx:id="lblAlcance"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Origen:"/>
+                    <Label fx:id="lblOrigen"/>
+                </HBox>
+            </VBox>
+
+            <!-- Opciones de revisión -->
+            <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
+                <Button text="Confirmar" onAction="#onConfirmar" />
+                <Button text="Rechazar" onAction="#onRechazar" />
+                <Button text="Derivar" onAction="#onDerivar" />
+            </HBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

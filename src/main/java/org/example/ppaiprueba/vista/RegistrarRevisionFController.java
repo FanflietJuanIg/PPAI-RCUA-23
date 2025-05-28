@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class RegistrarRevisionFController {
     @FXML private Button btnIniciarRevision;
     @FXML private ListView<Map<String,Object>> listaEventos;
@@ -27,6 +30,8 @@ public class RegistrarRevisionFController {
     @FXML private Label lblAlcance;
     @FXML private Label lblOrigen;
     @FXML private Label lblClasificacion;
+    @FXML private ImageView imgSismograma;
+
 
     private EventoSismico eventoSeleccionado;
     private CUController cuController;
@@ -44,6 +49,7 @@ public class RegistrarRevisionFController {
         estados.add(new Estado(Estado.Tipo.PENDIENTE_REVISION, Estado.Ambito.EVENTO_SISMICO));
         estados.add(new Estado(Estado.Tipo.EN_REVISION, Estado.Ambito.EVENTO_SISMICO));
         estados.add(new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO));
+        estados.add(new Estado(Estado.Tipo.CONFIRMADO, Estado.Ambito.EVENTO_SISMICO));
 
         // Inicializar eventos sísmicos
         LocalDateTime ahora = LocalDateTime.now();
@@ -196,7 +202,6 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(true);
     }
 
-    //TODO: No tendria que resolver mas el controlador (sino cambiar diagrama)
     @FXML
     private void onSeleccionarEvento() {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
@@ -230,7 +235,11 @@ public class RegistrarRevisionFController {
     @FXML
     public void mostrarEventosSismicos(List<Map<String, Object>> eventos) {
         if (eventos == null) {
-            throw new IllegalArgumentException("La lista de eventos no puede ser null");
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Información");
+            alerta.setHeaderText(null);
+            alerta.setContentText("No hay eventos sísmicos pendientes de revisión");
+            alerta.showAndWait();
         }
         
         listaEventos.setCellFactory(lv -> new ListCell<Map<String, Object>>() {
@@ -319,5 +328,13 @@ public class RegistrarRevisionFController {
         txtMagnitudNumero.clear();
         txtAlcance.clear();
         txtOrigen.clear();
+    }
+
+    public void mostrarSismograma() {
+
+        String url = "https://c8.alamy.com/comp/2BG7AJH/frequency-seismograph-waves-seismogram-earthquake-graphs-seismic-wave-vector-set-illustration-of-vibration-seismometer-diagram-waveform-record-2BG7AJH.jpg";
+        Image imagen = new Image(url);
+        imgSismograma.setImage(imagen);
+        imgSismograma.setVisible(true);
     }
 }

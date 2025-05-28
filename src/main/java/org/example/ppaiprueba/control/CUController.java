@@ -3,6 +3,8 @@ package org.example.ppaiprueba.control;
 
 import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
+
+import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,6 +12,8 @@ import org.example.ppaiprueba.modelo.Sesion;
 
 import org.example.ppaiprueba.modelo.Estado;
 import org.example.ppaiprueba.vista.RegistrarRevisionFController;
+
+import java.awt.image.BufferedImage;
 
 public class CUController {
     private List<EventoSismico> eventosSismicos;
@@ -32,7 +36,11 @@ public class CUController {
                 .filter(evento -> evento.esAutodetectado() ||
                                 evento.esPendienteRevision())
                 .collect(Collectors.toList());
-                
+
+        if (eventosPendientes.isEmpty()) {
+            pantalla.mostrarEventosSismicos(null);
+        }
+
         System.out.println("Eventos pendientes encontrados: " + eventosPendientes.size());
         ordenarEventos(eventosPendientes);
     }
@@ -58,6 +66,7 @@ public class CUController {
 
     public void tomarFechaHoraActual(EventoSismico evento, double num){
         LocalDateTime fechaHoraActual = LocalDateTime.now();
+
         if (num == 1){
             buscarEstadoRechazado(evento, fechaHoraActual);
         }
@@ -109,6 +118,7 @@ public class CUController {
 
     public void buscarEmpleadoLogeado(EventoSismico evento, LocalDateTime fechaHoraActual ,Estado estado){
         Empleado empleadoLogueado = sesion.getEmpleadoLogueado();
+
         if (estado.esRechazado()) {
             rechazarEventoSismico(estado, empleadoLogueado, evento, fechaHoraActual);
         }
@@ -137,7 +147,7 @@ public class CUController {
 
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
-        // TODO: eventosClasificados tecnicamente tiene la info de las series temporales y todo eso, habria que mostrarlos??
+        llamarCUGenerarSismograma();
         //TODO: simular SISMOGRAMA
         habilitarMapa(evento);
     }
@@ -163,5 +173,8 @@ public class CUController {
         }
     }
 
-// TODO: Preguntar como se valida la opcion que tomo el AS
+    private void llamarCUGenerarSismograma () {
+        pantalla.mostrarSismograma();
+
+    }
 }
