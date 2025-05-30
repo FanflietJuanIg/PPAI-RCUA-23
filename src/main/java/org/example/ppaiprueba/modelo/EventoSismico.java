@@ -120,6 +120,7 @@ public Object[][] buscarDatosSeriesTemp() {
 }
 
     //FIXME: cambios por ai, verificar si funcion
+    // Termina paso 9.2
     public Object[][] clasificarDatosPorEstacion(Object[][] datosSeries) {
         Object[][] copia = Arrays.stream(datosSeries)
                 .map(Object[]::clone)
@@ -133,9 +134,9 @@ public Object[][] buscarDatosSeriesTemp() {
     }
 
 //cambiar el nombre del metodo en el diagrama de secuencia
+    //Fin de paso 8 y paso 17
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
-        // TODO: //la siguiente parte no especifica en el diagrama de secuencia, talvez conviene un self de evento sismico que setee su estado actual y añada su cambio de estado
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }

@@ -191,9 +191,11 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(false);
     }
 
+    //Paso 5
     @FXML
     private void onIniciarRevision() {
         System.out.println("Botón Iniciar Revisión presionado");
+        //Paso 6
         cuController.buscarEventosSismicos();
 
     }
@@ -206,8 +208,8 @@ public class RegistrarRevisionFController {
     private void onSeleccionarEvento() {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
         if (eventoSeleccionado != null) {
-            // Lógica ficticia para bloqueo y obtención de datos
             //aca cambia el estado a enRevision
+            //Paso 8
             cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
         }
     }
@@ -220,9 +222,10 @@ public class RegistrarRevisionFController {
     }
 
 
-    //TODO: Preguntar a juani como hace
+    //Paso 6
     @FXML
     public void mostrarEventosSismicos(List<Map<String, Object>> eventos) {
+        // Alternativa A1
         if (eventos == null) {
             Alert alerta = new Alert(Alert.AlertType.INFORMATION);
             alerta.setTitle("Información");
@@ -230,15 +233,16 @@ public class RegistrarRevisionFController {
             alerta.setContentText("No hay eventos sísmicos pendientes de revisión");
             alerta.showAndWait();
         }
-        
-        listaEventos.setCellFactory(lv -> new ListCell<Map<String, Object>>() {
+
+
+        listaEventos.setCellFactory(lv /*list view (lo que muestre en pantalla)*/-> new ListCell<Map<String, Object>>() {
             @Override
-            protected void updateItem(Map<String, Object> item, boolean empty) {
+            protected void updateItem(Map<String, Object> item, boolean empty) { //sube a la list view cada celda
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    // Aquí seleccionas solo los atributos que quieres mostrar
+                    // Aquí seleccionas solo los atributos que quieres mostrar y se les da el formato con el que mostrarlos
                     Object[] magnitud = (Object[])item.get("Magnitud");
                     String displayText = String.format("Fecha: %s / - %s - %s - %s - %s - /Magnitud: %s %s",
                         item.get("fecha y hora ocurrencia"),
@@ -298,8 +302,10 @@ public class RegistrarRevisionFController {
         mostrarConfirmacionCambioEstado("Confirmado");
     }
 
+    //paso 15
     @FXML
     private void onRechazar() {
+        //paso 16
         cuController.validarDatos(eventoSeleccionado, 1);
         limpiarVista();
         mostrarConfirmacionCambioEstado("Rechazado");

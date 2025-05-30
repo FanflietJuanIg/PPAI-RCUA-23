@@ -14,11 +14,13 @@
         <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 10">
 
             <!-- Botón principal -->
-            <Button fx:id="btnIniciarRevision" text="Iniciar Revisión" onAction="#onIniciarRevision" />
+            <Button fx:id="btnIniciarRevision" text="Registrar resultado de revisión manual" onAction="#onIniciarRevision" />
 
             <!-- Contenedor horizontal para lista y sismograma -->
             <HBox spacing="20" alignment="TOP_CENTER">
                 <!-- Lista de eventos -->
+                <!--TODO: Agregar un comentario para que seleccione un evento-->
+
                 <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" prefWidth="500"/>
 
                 <!-- Imagen del sismograma -->
@@ -40,7 +42,7 @@
                 <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
             </VBox>
 
-            <!-- Detalles del evento -->
+            <!-- Detalles del evento (PASO 9.1)-->
             <VBox maxWidth="600">
                 <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
                 <HBox spacing="10">

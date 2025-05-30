@@ -4,7 +4,6 @@ package org.example.ppaiprueba.control;
 import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,8 +11,6 @@ import org.example.ppaiprueba.modelo.Sesion;
 
 import org.example.ppaiprueba.modelo.Estado;
 import org.example.ppaiprueba.vista.RegistrarRevisionFController;
-
-import java.awt.image.BufferedImage;
 
 public class CUController {
     private List<EventoSismico> eventosSismicos;
@@ -28,6 +25,7 @@ public class CUController {
         this.pantalla = pantalla;
     }
 
+    //Paso 6
     public void buscarEventosSismicos() {
         // Agrega logging para debug
         System.out.println("Total eventos: " + eventosSismicos.size());
@@ -36,7 +34,7 @@ public class CUController {
                 .filter(evento -> evento.esAutodetectado() ||
                                 evento.esPendienteRevision())
                 .collect(Collectors.toList());
-
+// Alternativa A1
         if (eventosPendientes.isEmpty()) {
             pantalla.mostrarEventosSismicos(null);
         }
@@ -64,9 +62,10 @@ public class CUController {
         pantalla.mostrarEventosSismicos(eventosOrdenados);
     }
 
+// Paso 8 y paso 17
     public void tomarFechaHoraActual(EventoSismico evento, double num){
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-
+// cambiar a case
         if (num == 1){
             buscarEstadoRechazado(evento, fechaHoraActual);
         }
@@ -113,6 +112,7 @@ public class CUController {
 
     public void bloquearEventoParaRevision(Estado enRevision, EventoSismico evento, LocalDateTime fechaHoraActual){
             evento.bloquearParaRevision(enRevision, fechaHoraActual);
+            //Paso 9
             buscarDatosSismicos(evento);
     }
 
@@ -142,29 +142,35 @@ public class CUController {
         eventosMapeado.put("Clasificacion", evento.getClasificacion());
         eventosMapeado.put("Origen", evento.getOrigen());
         pantalla.mostrarDatosSismicos(eventosMapeado);
+        //Paso 9.2
         buscarDatosSeriesTemporales(evento);
     }
 
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
+        //Paso 9.3
         llamarCUGenerarSismograma();
+        //Paso 10
         habilitarMapa(evento);
     }
-
+//paso 10
     public void habilitarMapa(EventoSismico evento) {
         pantalla.habilitarOpcionVerMapa();
+        //paso 12
         habilitarOpcionModificarDatos(evento);
     }
-
+//paso 12
     public void habilitarOpcionModificarDatos(EventoSismico evento) {
         pantalla.mostrarOpcionModificarDatos(evento);
+        //paso 14
         habilitarOpcionCambioEstado();
     }
-
+//paso 14
     public void habilitarOpcionCambioEstado(){
         pantalla.mostrarOpcionCambioEstado();
     }
 
+    //paso 16
     public void validarDatos(EventoSismico evento, double num) {
         if (evento.getMagnitud() != null && evento.getClasificacion() != null && evento.getOrigen() != null) {
             tomarFechaHoraActual(evento, num);
