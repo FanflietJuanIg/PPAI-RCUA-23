@@ -55,18 +55,21 @@ public class RegistrarRevisionFController {
         LocalDateTime ahora = LocalDateTime.now();
 
         // Crear tipos de datos para muestras
-        TipoDeDato tipoAmplitud = new TipoDeDato("Amplitud");
+        TipoDeDato tipoVelocidad = new TipoDeDato("Velocidad");
         TipoDeDato tipoFrecuencia = new TipoDeDato("Frecuencia");
+        TipoDeDato tipoLongitud = new TipoDeDato("Longitud");
 
         // Crear detalles de muestras
         List<DetalleMuestraSismica> detalles1 = Arrays.asList(
-                new DetalleMuestraSismica(5.2, tipoAmplitud),
-                new DetalleMuestraSismica(3.8, tipoFrecuencia)
+                new DetalleMuestraSismica(5.2, tipoVelocidad),
+                new DetalleMuestraSismica(3.8, tipoFrecuencia),
+                new DetalleMuestraSismica(4, tipoLongitud)
         );
 
         List<DetalleMuestraSismica> detalles2 = Arrays.asList(
-                new DetalleMuestraSismica(4.1, tipoAmplitud),
-                new DetalleMuestraSismica(2.9, tipoFrecuencia)
+                new DetalleMuestraSismica(4.1, tipoVelocidad),
+                new DetalleMuestraSismica(2.9, tipoFrecuencia),
+                new DetalleMuestraSismica(2, tipoLongitud)
         );
 
         // Crear muestras sísmicas
@@ -133,7 +136,7 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Fuerte", 6.5),
                 new AlcanceSismo("Regional", "Alto impacto"),
                 new OrigenDeGeneracion("Tectónico", "Subducción de placas"),
-                new ClasificacionSismo(20.0, 500.0, "nombre1"),
+                new ClasificacionSismo(20.0, 500.0, ClasificacionSismo.Nombre.SUPERFICIAL),
                 ahora.minusHours(2),
                 new Estado(Estado.Tipo.AUTODETECTADO),
                 "-33.4569",
@@ -147,7 +150,7 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Moderado", 4.8),
                 new AlcanceSismo("Local", "Impacto moderado"),
                 new OrigenDeGeneracion("Volcánico", "Actividad magmática"),
-                new ClasificacionSismo(0, 20, "nombre2"),
+                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.INTERMEDIO),
                 ahora.minusHours(1),
                 new Estado(Estado.Tipo.PENDIENTE_REVISION),
                 "-36.8529",
@@ -161,7 +164,7 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Leve", 3.2),
                 new AlcanceSismo("Local", "Bajo impacto"),
                 new OrigenDeGeneracion("Tectónico", "Falla local"),
-                new ClasificacionSismo(0, 20, "nombre2"),
+                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.PROFUNDO),
                 ahora.minusMinutes(30),
                 new Estado(Estado.Tipo.EN_REVISION),
                 "-35.4270",
@@ -216,9 +219,9 @@ public class RegistrarRevisionFController {
 
     @FXML
     public void mostrarDatosSismicos(Map<String, Object> eventoMapeado){
-        lblOrigen.setText(eventoMapeado.get("Clasificacion").toString());
+        lblOrigen.setText(eventoMapeado.get("Origen").toString());
         lblAlcance.setText(eventoMapeado.get("Alcance").toString());
-        lblClasificacion.setText(eventoMapeado.get("Origen").toString());
+        lblClasificacion.setText(eventoMapeado.get("Clasificacion").toString());
     }
 
 

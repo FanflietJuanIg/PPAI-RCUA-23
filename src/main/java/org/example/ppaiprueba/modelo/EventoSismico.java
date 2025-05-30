@@ -68,8 +68,8 @@ public class EventoSismico {
         return origen.getNombre();
     }
 
-    public String getClasificacion() {
-        return origen.getNombre();
+    public ClasificacionSismo.Nombre getClasificacion() {
+        return clasificacion.getNombre();
 
     }
 
@@ -119,7 +119,6 @@ public Object[][] buscarDatosSeriesTemp() {
     return clasificarDatosPorEstacion(datosSeries);
 }
 
-    //FIXME: cambios por ai, verificar si funcion
     // Termina paso 9.2
     public Object[][] clasificarDatosPorEstacion(Object[][] datosSeries) {
         Object[][] copia = Arrays.stream(datosSeries)
@@ -133,7 +132,6 @@ public Object[][] buscarDatosSeriesTemp() {
         return copia;
     }
 
-//cambiar el nombre del metodo en el diagrama de secuencia
     //Fin de paso 8 y paso 17
     public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);

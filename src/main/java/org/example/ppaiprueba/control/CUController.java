@@ -63,19 +63,22 @@ public class CUController {
     }
 
 // Paso 8 y paso 17
-    public void tomarFechaHoraActual(EventoSismico evento, double num){
-        LocalDateTime fechaHoraActual = LocalDateTime.now();
-// cambiar a case
-        if (num == 1){
+public void tomarFechaHoraActual(EventoSismico evento, double num) {
+    LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+    switch ((int) num) {
+        case 1:
             buscarEstadoRechazado(evento, fechaHoraActual);
-        }
-        else if (num == 2) {
+            break;
+        case 2:
             buscarEstadoConfirmado(evento, fechaHoraActual);
-        }
-        else if (num == 3) {
+            break;
+        case 3:
             buscarEstadoEnRevision(evento, fechaHoraActual);
-        }
+            break;
     }
+}
+
 
     public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
         Estado rechazado = null;
@@ -135,7 +138,6 @@ public class CUController {
         evento.confirmar(estadoRechazado, empleadoLogueado, fechaHoraActual);
     }
 
-//TODO: esto me recomendo chat gpt, se tiene que hacer todo eso
     public void buscarDatosSismicos (EventoSismico evento) {
         Map<String, Object> eventosMapeado = new HashMap<>();
         eventosMapeado.put("Alcance", evento.getAlcance());

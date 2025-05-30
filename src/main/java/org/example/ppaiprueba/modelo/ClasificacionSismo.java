@@ -3,9 +3,15 @@ package org.example.ppaiprueba.modelo;
 public class ClasificacionSismo {
     private double kmProfundidadDesde;
     private double kmProfundidadHasta;
-    private String nombre;
+    public enum Nombre{
+        SUPERFICIAL,
+        INTERMEDIO,
+        PROFUNDO
+    };
 
-    public ClasificacionSismo(double desde, double hasta, String nombre) {
+    private Nombre nombre;
+
+    public ClasificacionSismo(double desde, double hasta, Nombre nombre) {
         this.kmProfundidadDesde = desde;
         this.kmProfundidadHasta = hasta;
         this.nombre = nombre;
@@ -19,7 +25,7 @@ public class ClasificacionSismo {
         return kmProfundidadHasta;
     }
 
-    public String getNombre() {
+    public Nombre getNombre() {
         return nombre;
     }
 
@@ -31,7 +37,7 @@ public class ClasificacionSismo {
         this.kmProfundidadHasta = hasta;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(Nombre nombre) {
         this.nombre = nombre;
     }
 }
