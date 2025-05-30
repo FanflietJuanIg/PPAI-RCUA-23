@@ -247,7 +247,9 @@ public class RegistrarRevisionFController {
                 } else {
                     // Aquí seleccionas solo los atributos que quieres mostrar y se les da el formato con el que mostrarlos
                     Object[] magnitud = (Object[])item.get("Magnitud");
-                    String displayText = String.format("Fecha: %s / - %s - %s - %s - %s - /Magnitud: %s %s",
+                    String displayText = String.format("Fecha: %s /Latitud Hipocentro: %s / " +
+                                    "Longitud Hipocentro: %s / Latitud Epicentro: %s / Longitud Epicentro: %s " +
+                                    " / Magnitud: %s %s",
                         item.get("fecha y hora ocurrencia"),
                         item.get("Latitud Hipocentro"),
                         item.get("Longitud Hipocentro"),

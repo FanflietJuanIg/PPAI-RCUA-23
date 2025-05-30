@@ -8,6 +8,7 @@ import java.util.List;
 public class MuestraSismica {
     private LocalDateTime fechaHoraMuestra;
     private List<DetalleMuestraSismica> detalleMuestraSismica;
+
     public MuestraSismica(LocalDateTime fechaHoraMuestra, List<DetalleMuestraSismica> detalleMuestraSismica){
         this.fechaHoraMuestra = fechaHoraMuestra;
         this.detalleMuestraSismica = new ArrayList<>(detalleMuestraSismica);

@@ -24,17 +24,13 @@ public class Estado {
     private Tipo tipo;
     private Ambito ambito;
 
-    /**
-     * Constructor completo para estado con ámbito y flag de autodetección.
-     */
+
     public Estado(Tipo tipo, Ambito ambito) {
         this.tipo = tipo;
         this.ambito = ambito;
     }
 
-    /**
-     * Constructor básico para estados de eventos sísmicos no autodetectados.
-     */
+
     public Estado(Tipo tipo) {
         this(tipo, Ambito.EVENTO_SISMICO);
     }
@@ -47,9 +43,6 @@ public class Estado {
         return ambito;
     }
 
-    /**
-     * Indica si el estado corresponde a un evento autodetectado.
-     */
     public boolean esAutodetectado() {
         return tipo == tipo.AUTODETECTADO;
     }

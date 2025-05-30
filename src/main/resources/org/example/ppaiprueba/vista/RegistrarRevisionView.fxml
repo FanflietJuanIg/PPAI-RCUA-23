@@ -19,7 +19,6 @@
             <!-- Contenedor horizontal para lista y sismograma -->
             <HBox spacing="20" alignment="TOP_CENTER">
                 <!-- Lista de eventos -->
-                <!--TODO: Agregar un comentario para que seleccione un evento-->
 
                 <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" prefWidth="500"/>
 

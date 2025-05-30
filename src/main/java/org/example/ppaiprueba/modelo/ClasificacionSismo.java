@@ -3,7 +3,7 @@ package org.example.ppaiprueba.modelo;
 public class ClasificacionSismo {
     private double kmProfundidadDesde;
     private double kmProfundidadHasta;
-    public enum Nombre{
+    public enum Nombre {
         SUPERFICIAL,
         INTERMEDIO,
         PROFUNDO
