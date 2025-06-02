@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 import org.example.ppaiprueba.modelo.Sesion;
 
 import org.example.ppaiprueba.modelo.Estado;
-import org.example.ppaiprueba.vista.RegistrarRevisionFController;
+import org.example.ppaiprueba.vista.PantallaRevision;
 
-public class CUController {
+public class GestorRevisionManual {
     private List<EventoSismico> eventosSismicos;
     private List<Estado> estados;
     private Sesion sesion;
-    private RegistrarRevisionFController pantalla;
+    private PantallaRevision pantalla;
 
-    public CUController(List<EventoSismico> eventosSismicos, List<Estado> estados, Sesion sesion, RegistrarRevisionFController pantalla){
+    public GestorRevisionManual(List<EventoSismico> eventosSismicos, List<Estado> estados, Sesion sesion, PantallaRevision pantalla){
         this.eventosSismicos = eventosSismicos;
         this.estados = estados;
         this.sesion = sesion;

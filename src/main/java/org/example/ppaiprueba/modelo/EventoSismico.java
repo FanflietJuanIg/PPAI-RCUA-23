@@ -4,9 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Comparator;
-import javafx.util.Pair;
-import org.example.ppaiprueba.modelo.Usuario;
+
 
 public class EventoSismico {
     private MagnitudRichter magnitud;

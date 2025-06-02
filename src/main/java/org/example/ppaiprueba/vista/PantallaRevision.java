@@ -4,7 +4,7 @@ package org.example.ppaiprueba.vista;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.example.ppaiprueba.control.CUController;
+import org.example.ppaiprueba.control.GestorRevisionManual;
 import org.example.ppaiprueba.modelo.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 
-public class RegistrarRevisionFController {
+public class PantallaRevision {
     @FXML private Button opRegistrarRevision;
     @FXML private ListView<Map<String,Object>> listaEventos;
     @FXML private Button btnVisualizarMapa;
@@ -40,7 +40,7 @@ public class RegistrarRevisionFController {
 
 
     private EventoSismico eventoSeleccionado;
-    private CUController cuController;
+    private GestorRevisionManual cuController;
 
     @FXML
     public void initialize() {
@@ -191,8 +191,7 @@ public class RegistrarRevisionFController {
         Sesion sesion = new Sesion(usuario);
 
         // Inicializar el controlador con los datos
-        //habilitarPantalla(eventosSismicos, estados, sesion, this);
-        cuController = new CUController(eventosSismicos, estados, sesion, this);
+        cuController = new GestorRevisionManual(eventosSismicos, estados, sesion, this);
 
 
         // Ocultar secciones
@@ -310,7 +309,7 @@ public class RegistrarRevisionFController {
         eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
         eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
-
+/*
     @FXML
     private void onConfirmar() {
         cuController.validarDatos(eventoSeleccionado, 2);
@@ -332,7 +331,7 @@ public class RegistrarRevisionFController {
 //        cuController.derivarEvento(eventoSeleccionado, "Analista 1");
 //        limpiarVista();
     }
-
+*/
     @FXML
     private void tomarOpcionCambiarEstado(ActionEvent event) {
         Button source = (Button) event.getSource();
