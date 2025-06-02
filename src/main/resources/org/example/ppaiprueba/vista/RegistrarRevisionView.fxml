@@ -14,13 +14,13 @@
         <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 10">
 
             <!-- Botón principal -->
-            <Button fx:id="btnIniciarRevision" text="Registrar resultado de revisión manual" onAction="#onIniciarRevision" />
+            <Button fx:id="btnIniciarRevision" text="Registrar resultado de revisión manual" onAction="#opRegistrarRevision" />
 
             <!-- Contenedor horizontal para lista y sismograma -->
             <HBox spacing="20" alignment="TOP_CENTER">
                 <!-- Lista de eventos -->
 
-                <ListView fx:id="listaEventos" onMouseClicked="#onSeleccionarEvento" prefHeight="150" prefWidth="500"/>
+                <ListView fx:id="listaEventos" onMouseClicked="#tomarEventoSeleccionado" prefHeight="150" prefWidth="500"/>
 
                 <!-- Imagen del sismograma -->
                 <ImageView fx:id="imgSismograma" fitWidth="300" preserveRatio="true" visible="false"/>
@@ -60,9 +60,9 @@
 
             <!-- Opciones de revisión -->
             <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
-                <Button text="Confirmar" onAction="#onConfirmar" />
-                <Button text="Rechazar" onAction="#onRechazar" />
-                <Button text="Derivar" onAction="#onDerivar" />
+                <Button text="Confirmar" onAction="#tomarOpcionCambiarEstado" fx:id="btnConfirmar" />
+                <Button text="Rechazar" onAction="#tomarOpcionCambiarEstado" fx:id="btnRechazar" />
+                <Button text="Derivar" onAction="#tomarOpcionCambiarEstado" fx:id="btnDerivar"/>
             </HBox>
 
         </VBox>

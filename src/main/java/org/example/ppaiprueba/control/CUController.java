@@ -25,6 +25,10 @@ public class CUController {
         this.pantalla = pantalla;
     }
 
+    public void opRegistrarRevision(){
+        buscarEventosSismicos();
+    }
+
     //Paso 6
     public void buscarEventosSismicos() {
         // Agrega logging para debug
@@ -60,6 +64,15 @@ public class CUController {
                 })
                 .toList();
         pantalla.mostrarEventosSismicos(eventosOrdenados);
+    }
+
+    public void tomarEventoSeleccionado(EventoSismico evento, double num){
+        tomarFechaHoraActual(evento, num);
+    }
+
+    public void tomarOpcionCambioEstado(EventoSismico evento, double num){
+        validarDatos(evento, num);
+
     }
 
 // Paso 8 y paso 17

@@ -16,9 +16,11 @@ import java.util.Map;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
 
 public class RegistrarRevisionFController {
-    @FXML private Button btnIniciarRevision;
+    @FXML private Button opRegistrarRevision;
     @FXML private ListView<Map<String,Object>> listaEventos;
     @FXML private Button btnVisualizarMapa;
     @FXML private VBox formularioEdicion;
@@ -31,6 +33,10 @@ public class RegistrarRevisionFController {
     @FXML private Label lblOrigen;
     @FXML private Label lblClasificacion;
     @FXML private ImageView imgSismograma;
+    @FXML private Button btnConfirmar;
+    @FXML private Button btnRechazar;
+    @FXML private Button btnDerivar;
+
 
 
     private EventoSismico eventoSeleccionado;
@@ -185,6 +191,7 @@ public class RegistrarRevisionFController {
         Sesion sesion = new Sesion(usuario);
 
         // Inicializar el controlador con los datos
+        //habilitarPantalla(eventosSismicos, estados, sesion, this);
         cuController = new CUController(eventosSismicos, estados, sesion, this);
 
 
@@ -194,12 +201,16 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(false);
     }
 
+    private void habilitarPantalla(){
+        cuController.opRegistrarRevision();
+    }
+
     //Paso 5
     @FXML
-    private void onIniciarRevision() {
+    private void opRegistrarRevision() {
         System.out.println("Botón Iniciar Revisión presionado");
         //Paso 6
-        cuController.buscarEventosSismicos();
+        habilitarPantalla();
 
     }
 
@@ -208,12 +219,12 @@ public class RegistrarRevisionFController {
     }
 
     @FXML
-    private void onSeleccionarEvento() {
+    private void tomarEventoSeleccionado() {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
         if (eventoSeleccionado != null) {
             //aca cambia el estado a enRevision
             //Paso 8
-            cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
+            cuController.tomarEventoSeleccionado(eventoSeleccionado, 3);
         }
     }
 
@@ -320,6 +331,25 @@ public class RegistrarRevisionFController {
     private void onDerivar() {
 //        cuController.derivarEvento(eventoSeleccionado, "Analista 1");
 //        limpiarVista();
+    }
+
+    @FXML
+    private void tomarOpcionCambiarEstado(ActionEvent event) {
+        Button source = (Button) event.getSource();
+
+        if (source == btnConfirmar) {
+            cuController.tomarOpcionCambioEstado(eventoSeleccionado, 2);
+            mostrarConfirmacionCambioEstado("Confirmado");
+            limpiarVista();
+        } else if (source == btnRechazar) {
+            cuController.tomarOpcionCambioEstado(eventoSeleccionado,1);
+            mostrarConfirmacionCambioEstado("Rechazado");
+            limpiarVista();
+            //cuController.opRegistrarRevision();
+        } else if (source == btnDerivar) {
+            cuController.tomarOpcionCambioEstado( eventoSeleccionado, 4);
+
+        }
     }
 
     private void limpiarVista() {
