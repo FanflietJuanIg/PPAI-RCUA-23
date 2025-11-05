@@ -1,12 +1,13 @@
 package org.example.ppaiprueba.modelo;
 
+import org.example.ppaiprueba.State.Estado;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Comparator;
-import javafx.util.Pair;
-import org.example.ppaiprueba.modelo.Usuario;
+
 
 public class EventoSismico {
     private MagnitudRichter magnitud;
@@ -68,8 +69,8 @@ public class EventoSismico {
         return origen.getNombre();
     }
 
-    public String getClasificacion() {
-        return origen.getNombre();
+    public ClasificacionSismo.Nombre getClasificacion() {
+        return clasificacion.getNombre();
 
     }
 
@@ -119,7 +120,7 @@ public Object[][] buscarDatosSeriesTemp() {
     return clasificarDatosPorEstacion(datosSeries);
 }
 
-    //FIXME: cambios por ai, verificar si funcion
+    // Termina paso 9.2
     public Object[][] clasificarDatosPorEstacion(Object[][] datosSeries) {
         Object[][] copia = Arrays.stream(datosSeries)
                 .map(Object[]::clone)
@@ -131,28 +132,39 @@ public Object[][] buscarDatosSeriesTemp() {
 
         return copia;
     }
-
-//cambiar el nombre del metodo en el diagrama de secuencia
-    public void newCambioEstado(LocalDateTime fechaHoraActual,Estado estado, Empleado empleado) {
+/*
+    //Fin de paso 8 y paso 17
+    public void newCambioEstado(LocalDate fechaHoraActual, Estado estado, Empleado empleado) {
         CambioEstado cambio = new CambioEstado(fechaHoraActual, estado, empleado);
-        // TODO: //la siguiente parte no especifica en el diagrama de secuencia, talvez conviene un self de evento sismico que setee su estado actual y añada su cambio de estado
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
-
-    public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
+    public void bloquearParaRevision(LocalDate fechaHoraActual){
         Empleado empleadoCambio = null;
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
-                empleadoCambio = ce.getResponsable();
                 break;
             }
         }
         newCambioEstado(fechaHoraActual,estado, empleadoCambio);
     }
+*/
 
-    public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
+    public void bloquearParaRevision(LocalDate fechaActual) {
+        estadoActual.bloquearParaRevision(fechaActual, this);
+    }
+
+    public void rechazar(LocalDate fechaActual, Empleado responsable) {
+        estadoActual.rechazar(fechaActual, responsable, this);
+    }
+
+    public void confirmar(LocalDate fechaActual, Empleado responsable) {
+        estadoActual.confirmar(fechaActual, responsable, this);
+    }
+
+/*
+    public void rechazar(Estado estado,Empleado empleadoLogueado, LocalDate fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
@@ -162,7 +174,7 @@ public Object[][] buscarDatosSeriesTemp() {
         newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
 
-    public void confirmar(Estado estado,Empleado empleadoLogueado, LocalDateTime fechaHoraActual) {
+    public void confirmar(Estado estado,Empleado empleadoLogueado, LocalDate fechaHoraActual) {
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
@@ -171,5 +183,13 @@ public Object[][] buscarDatosSeriesTemp() {
         }
         newCambioEstado(fechaHoraActual,estado, empleadoLogueado);
     }
+*/
 
+    public List<CambioEstado> getCambiosEstado() {
+        return cambiosEstado;
+    }
+
+    public void addCambioEstado(CambioEstado ca) {
+        cambiosEstado.add(ca);
+    }
 }

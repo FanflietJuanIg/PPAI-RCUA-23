@@ -3,36 +3,45 @@ package org.example.ppaiprueba.control;
 
 import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.example.ppaiprueba.modelo.Sesion;
 
-import org.example.ppaiprueba.modelo.Estado;
-import org.example.ppaiprueba.vista.RegistrarRevisionFController;
+import org.example.ppaiprueba.State.Estado;
+import org.example.ppaiprueba.vista.PantallaRevision;
 
-public class CUController {
+public class GestorRevisionManual {
     private List<EventoSismico> eventosSismicos;
-    private List<Estado> estados;
     private Sesion sesion;
-    private RegistrarRevisionFController pantalla;
+    private PantallaRevision pantalla;
 
-    public CUController(List<EventoSismico> eventosSismicos, List<Estado> estados, Sesion sesion, RegistrarRevisionFController pantalla){
+    public GestorRevisionManual(List<EventoSismico> eventosSismicos, Sesion sesion, PantallaRevision pantalla){
         this.eventosSismicos = eventosSismicos;
-        this.estados = estados;
         this.sesion = sesion;
         this.pantalla = pantalla;
     }
 
+    public void opRegistrarRevision(){
+        buscarEventosSismicos();
+    }
+
+    //Paso 6
     public void buscarEventosSismicos() {
         // Agrega logging para debug
         System.out.println("Total eventos: " + eventosSismicos.size());
-        
+
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
                 .filter(evento -> evento.esAutodetectado() ||
                                 evento.esPendienteRevision())
                 .collect(Collectors.toList());
-                
+// Alternativa A1
+        if (eventosPendientes.isEmpty()) {
+            pantalla.mostrarEventosSismicos(null);
+        }
+
         System.out.println("Eventos pendientes encontrados: " + eventosPendientes.size());
         ordenarEventos(eventosPendientes);
     }
@@ -56,19 +65,33 @@ public class CUController {
         pantalla.mostrarEventosSismicos(eventosOrdenados);
     }
 
-    public void tomarFechaHoraActual(EventoSismico evento, double num){
-        LocalDateTime fechaHoraActual = LocalDateTime.now();
-        if (num == 1){
-            buscarEstadoRechazado(evento, fechaHoraActual);
-        }
-        else if (num == 2) {
-            buscarEstadoConfirmado(evento, fechaHoraActual);
-        }
-        else if (num == 3) {
-            buscarEstadoEnRevision(evento, fechaHoraActual);
-        }
+    public void tomarEventoSeleccionado(EventoSismico evento, double num){
+        tomarFechaHoraActual(evento, num);
     }
 
+    public void tomarOpcionCambioEstado(EventoSismico evento, double num){
+        validarDatos(evento, num);
+
+    }
+
+// Paso 8 y paso 17
+public void tomarFechaHoraActual(EventoSismico evento, double num) {
+    LocalDate fechaHoraActual = LocalDate.now();
+
+    switch ((int) num) {
+        case 1:
+            rechazarEventoSismico(evento, fechaHoraActual);
+            break;
+        case 2:
+            confirmarEventoSismico(evento, fechaHoraActual);
+            break;
+        case 3:
+            bloquearEventoParaRevision(evento, fechaHoraActual);
+            break;
+    }
+}
+
+/*
     public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
         Estado rechazado = null;
         for (Estado estado : estados) {
@@ -101,14 +124,17 @@ public class CUController {
         }
         buscarEmpleadoLogeado(evento, fechaHoraActual, confirmado);
     }
+*/
 
-    public void bloquearEventoParaRevision(Estado enRevision, EventoSismico evento, LocalDateTime fechaHoraActual){
-            evento.bloquearParaRevision(enRevision, fechaHoraActual);
+    public void bloquearEventoParaRevision(EventoSismico evento, LocalDate fechaHoraActual){
+            evento.bloquearParaRevision(fechaHoraActual);
+            //Paso 9
             buscarDatosSismicos(evento);
     }
-
-    public void buscarEmpleadoLogeado(EventoSismico evento, LocalDateTime fechaHoraActual ,Estado estado){
+/*
+    public void buscarEmpleadoLogeado(EventoSismico evento, LocalDate fechaHoraActual ,Estado estado){
         Empleado empleadoLogueado = sesion.getEmpleadoLogueado();
+
         if (estado.esRechazado()) {
             rechazarEventoSismico(estado, empleadoLogueado, evento, fechaHoraActual);
         }
@@ -116,48 +142,57 @@ public class CUController {
             confirmarEventoSismico(estado, empleadoLogueado, evento, fechaHoraActual);
         }
     }
+    */
 
-    public void rechazarEventoSismico(Estado estadoRechazado,Empleado empleadoLogueado, EventoSismico evento, LocalDateTime fechaHoraActual) {
-        evento.rechazar(estadoRechazado, empleadoLogueado, fechaHoraActual);
+    public Empleado buscarEmpleadoLogueado() {
+        return sesion.getEmpleadoLogueado();
     }
 
-    public void confirmarEventoSismico(Estado estadoRechazado,Empleado empleadoLogueado, EventoSismico evento, LocalDateTime fechaHoraActual) {
-        evento.confirmar(estadoRechazado, empleadoLogueado, fechaHoraActual);
+    public void rechazarEventoSismico(EventoSismico evento, LocalDate fechaHoraActual) {
+        Empleado responsable = buscarEmpleadoLogueado();
+        evento.rechazar(fechaHoraActual, responsable);
     }
 
-//TODO: esto me recomendo chat gpt, se tiene que hacer todo eso
+    public void confirmarEventoSismico(EventoSismico evento, LocalDate fechaHoraActual) {
+        Empleado responsable = buscarEmpleadoLogueado();
+        evento.confirmar(fechaHoraActual, responsable);
+    }
+
     public void buscarDatosSismicos (EventoSismico evento) {
         Map<String, Object> eventosMapeado = new HashMap<>();
         eventosMapeado.put("Alcance", evento.getAlcance());
         eventosMapeado.put("Clasificacion", evento.getClasificacion());
         eventosMapeado.put("Origen", evento.getOrigen());
         pantalla.mostrarDatosSismicos(eventosMapeado);
+        //Paso 9.2
         buscarDatosSeriesTemporales(evento);
     }
 
-
     public void buscarDatosSeriesTemporales(EventoSismico evento) {
         Object [][] eventosClasificados = evento.buscarDatosSeriesTemp();
-        pantalla.mostrarDatosSeries(eventosClasificados);
-        // TODO: eventosClasificados tecnicamente tiene la info de las series temporales y todo eso, habria que mostrarlos??
-        //TODO: simular SISMOGRAMA
+        //Paso 9.3
+        llamarCUGenerarSismograma();
+        //Paso 10
         habilitarMapa(evento);
     }
-
+//paso 10
     public void habilitarMapa(EventoSismico evento) {
         pantalla.habilitarOpcionVerMapa();
+        //paso 12
         habilitarOpcionModificarDatos(evento);
     }
-
+//paso 12
     public void habilitarOpcionModificarDatos(EventoSismico evento) {
-        pantalla.habilitarOpcionModificarDatos(evento);
+        pantalla.mostrarOpcionModificarDatos(evento);
+        //paso 14
         habilitarOpcionCambioEstado();
     }
-
+//paso 14
     public void habilitarOpcionCambioEstado(){
         pantalla.mostrarOpcionCambioEstado();
     }
 
+    //paso 16
     public void validarDatos(EventoSismico evento, double num) {
         if (evento.getMagnitud() != null && evento.getClasificacion() != null && evento.getOrigen() != null) {
             tomarFechaHoraActual(evento, num);
@@ -165,5 +200,8 @@ public class CUController {
         }
     }
 
-// TODO: Preguntar como se valida la opcion que tomo el AS
+    private void llamarCUGenerarSismograma () {
+        pantalla.mostrarSismograma();
+
+    }
 }

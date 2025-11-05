@@ -1,11 +1,12 @@
 // RegistrarRevisionFController.java
 package org.example.ppaiprueba.vista;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.example.ppaiprueba.control.CUController;
+import org.example.ppaiprueba.State.AutoDetectado;
+import org.example.ppaiprueba.State.BloqueadoParaRevision;
+import org.example.ppaiprueba.control.GestorRevisionManual;
 import org.example.ppaiprueba.modelo.*;
 
 import java.time.LocalDateTime;
@@ -15,11 +16,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javafx.collections.ObservableList;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import org.example.ppaiprueba.State.Estado;
 
-public class RegistrarRevisionFController {
-    @FXML private Button btnIniciarRevision;
+public class PantallaRevision {
+    @FXML private Button opRegistrarRevision;
     @FXML private ListView<Map<String,Object>> listaEventos;
     @FXML private Button btnVisualizarMapa;
     @FXML private VBox formularioEdicion;
@@ -31,47 +35,43 @@ public class RegistrarRevisionFController {
     @FXML private Label lblAlcance;
     @FXML private Label lblOrigen;
     @FXML private Label lblClasificacion;
-    @FXML private TableView<Object[]> tablaDatos;
-    @FXML private TableColumn<Object[], String> colEstacion;
-    @FXML private TableColumn<Object[], String> colValor;
+    @FXML private ImageView imgSismograma;
+    @FXML private Button btnConfirmar;
+    @FXML private Button btnRechazar;
+    @FXML private Button btnDerivar;
+
 
 
     private EventoSismico eventoSeleccionado;
-    private CUController cuController;
-
-
-
+    private GestorRevisionManual cuController;
 
     @FXML
     public void initialize() {
         // Cargar eventos simulados
        // Estado pendiente = new Estado("Pendiente Revision");
         // Crear las listas
-        List<Estado> estados = new ArrayList<>();
-        List<EventoSismico> eventosSismicos = new ArrayList<>();
 
-        // Inicializar estados
-        estados.add(new Estado(Estado.Tipo.AUTODETECTADO, Estado.Ambito.EVENTO_SISMICO));
-        estados.add(new Estado(Estado.Tipo.PENDIENTE_REVISION, Estado.Ambito.EVENTO_SISMICO));
-        estados.add(new Estado(Estado.Tipo.EN_REVISION, Estado.Ambito.EVENTO_SISMICO));
-        estados.add(new Estado(Estado.Tipo.RECHAZADO, Estado.Ambito.EVENTO_SISMICO));
+        List<EventoSismico> eventosSismicos = new ArrayList<>();
 
         // Inicializar eventos sísmicos
         LocalDateTime ahora = LocalDateTime.now();
 
         // Crear tipos de datos para muestras
-        TipoDeDato tipoAmplitud = new TipoDeDato("Amplitud");
+        TipoDeDato tipoVelocidad = new TipoDeDato("Velocidad");
         TipoDeDato tipoFrecuencia = new TipoDeDato("Frecuencia");
+        TipoDeDato tipoLongitud = new TipoDeDato("Longitud");
 
         // Crear detalles de muestras
         List<DetalleMuestraSismica> detalles1 = Arrays.asList(
-                new DetalleMuestraSismica(5.2, tipoAmplitud),
-                new DetalleMuestraSismica(3.8, tipoFrecuencia)
+                new DetalleMuestraSismica(5.2, tipoVelocidad),
+                new DetalleMuestraSismica(3.8, tipoFrecuencia),
+                new DetalleMuestraSismica(4, tipoLongitud)
         );
 
         List<DetalleMuestraSismica> detalles2 = Arrays.asList(
-                new DetalleMuestraSismica(4.1, tipoAmplitud),
-                new DetalleMuestraSismica(2.9, tipoFrecuencia)
+                new DetalleMuestraSismica(4.1, tipoVelocidad),
+                new DetalleMuestraSismica(2.9, tipoFrecuencia),
+                new DetalleMuestraSismica(2, tipoLongitud)
         );
 
         // Crear muestras sísmicas
@@ -138,9 +138,9 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Fuerte", 6.5),
                 new AlcanceSismo("Regional", "Alto impacto"),
                 new OrigenDeGeneracion("Tectónico", "Subducción de placas"),
-                new ClasificacionSismo(20.0, 500.0, "nombre1"),
+                new ClasificacionSismo(20.0, 500.0, ClasificacionSismo.Nombre.SUPERFICIAL),
                 ahora.minusHours(2),
-                new Estado(Estado.Tipo.AUTODETECTADO),
+                new AutoDetectado(),
                 "-33.4569",
                 "-70.6483",
                 "-33.4569",
@@ -152,9 +152,9 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Moderado", 4.8),
                 new AlcanceSismo("Local", "Impacto moderado"),
                 new OrigenDeGeneracion("Volcánico", "Actividad magmática"),
-                new ClasificacionSismo(0, 20, "nombre2"),
+                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.INTERMEDIO),
                 ahora.minusHours(1),
-                new Estado(Estado.Tipo.PENDIENTE_REVISION),
+                new BloqueadoParaRevision(),
                 "-36.8529",
                 "-73.0432",
                 "-36.8529",
@@ -166,9 +166,9 @@ public class RegistrarRevisionFController {
                 new MagnitudRichter("Leve", 3.2),
                 new AlcanceSismo("Local", "Bajo impacto"),
                 new OrigenDeGeneracion("Tectónico", "Falla local"),
-                new ClasificacionSismo(0, 20, "nombre2"),
+                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.PROFUNDO),
                 ahora.minusMinutes(30),
-                new Estado(Estado.Tipo.EN_REVISION),
+                new AutoDetectado(),
                 "-35.4270",
                 "-71.6483",
                 "-35.4270",
@@ -187,7 +187,7 @@ public class RegistrarRevisionFController {
         Sesion sesion = new Sesion(usuario);
 
         // Inicializar el controlador con los datos
-        cuController = new CUController(eventosSismicos, estados, sesion, this);
+        cuController = new GestorRevisionManual(eventosSismicos, sesion, this);
 
 
         // Ocultar secciones
@@ -196,10 +196,16 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(false);
     }
 
+    private void habilitarPantalla(){
+        cuController.opRegistrarRevision();
+    }
+
+    //Paso 5
     @FXML
-    private void onIniciarRevision() {
+    private void opRegistrarRevision() {
         System.out.println("Botón Iniciar Revisión presionado");
-        cuController.buscarEventosSismicos();
+        //Paso 6
+        habilitarPantalla();
 
     }
 
@@ -207,54 +213,49 @@ public class RegistrarRevisionFController {
         opcionesRevision.setVisible(true);
     }
 
-    //TODO: No tendria que resolver mas el controlador (sino cambiar diagrama)
     @FXML
-    private void onSeleccionarEvento() {
+    private void tomarEventoSeleccionado() {
         eventoSeleccionado = (EventoSismico) listaEventos.getSelectionModel().getSelectedItem().get("Evento");
         if (eventoSeleccionado != null) {
-            // Lógica ficticia para bloqueo y obtención de datos
             //aca cambia el estado a enRevision
-            cuController.tomarFechaHoraActual(eventoSeleccionado, 3);
-
-  /*          //Aca busca los datos para
-            Object[] magnitud = eventoSeleccionado.getMagnitud();
-            String descripcion = (String) magnitud[0];
-            double valor = (Double) magnitud[1];
-
-            lblMagnitudDescripcion.setText(descripcion);
-            txtMagnitudNumero.setText(String.valueOf(valor));
-            txtAlcance.setText(eventoSeleccionado.getAlcance());
-            txtOrigen.setText(eventoSeleccionado.getOrigen());
-*/
+            //Paso 8
+            cuController.tomarEventoSeleccionado(eventoSeleccionado, 3);
         }
     }
 
     @FXML
-    public void mostrarDatosSismicos(Map<String, Object> eventoMapeado)
-        {
-        lblOrigen.setText(eventoMapeado.get("Clasificacion").toString());
+    public void mostrarDatosSismicos(Map<String, Object> eventoMapeado){
+        lblOrigen.setText(eventoMapeado.get("Origen").toString());
         lblAlcance.setText(eventoMapeado.get("Alcance").toString());
-        lblClasificacion.setText(eventoMapeado.get("Origen").toString());
+        lblClasificacion.setText(eventoMapeado.get("Clasificacion").toString());
     }
 
 
-    //TODO: Preguntar a juani como hace
+    //Paso 6
     @FXML
     public void mostrarEventosSismicos(List<Map<String, Object>> eventos) {
+        // Alternativa A1
         if (eventos == null) {
-            throw new IllegalArgumentException("La lista de eventos no puede ser null");
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Información");
+            alerta.setHeaderText(null);
+            alerta.setContentText("No hay eventos sísmicos pendientes de revisión");
+            alerta.showAndWait();
         }
-        
+
+
         listaEventos.setCellFactory(lv -> new ListCell<Map<String, Object>>() {
             @Override
-            protected void updateItem(Map<String, Object> item, boolean empty) {
+            protected void updateItem(Map<String, Object> item, boolean empty) { //sube a la list view cada celda
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    // Aquí seleccionas solo los atributos que quieres mostrar
+                    // Aquí seleccionas solo los atributos que quieres mostrar y se les da el formato con el que mostrarlos
                     Object[] magnitud = (Object[])item.get("Magnitud");
-                    String displayText = String.format("Fecha: %s / - %s - %s - %s - %s - /Magnitud: %s %s",
+                    String displayText = String.format("Fecha: %s /Latitud Hipocentro: %s / " +
+                                    "Longitud Hipocentro: %s / Latitud Epicentro: %s / Longitud Epicentro: %s " +
+                                    " / Magnitud: %s %s",
                         item.get("fecha y hora ocurrencia"),
                         item.get("Latitud Hipocentro"),
                         item.get("Longitud Hipocentro"),
@@ -274,30 +275,12 @@ public class RegistrarRevisionFController {
     }
 
     @FXML
-    public void mostrarDatosSeries(Object[][] datosClasificados) {
-        colEstacion.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue()[0].toString()));
-
-        colValor.setCellValueFactory(data -> {
-            Object[] valores = (Object[]) data.getValue()[1];
-            String texto = Arrays.toString(valores); // convierte a "[1.1, 2.2, 3.3]"
-            return new SimpleStringProperty(texto);
-        });
-
-        ObservableList<Object[]> lista = FXCollections.observableArrayList();
-        for (Object[] fila : datosClasificados) {
-            lista.add(fila);
-        }
-        tablaDatos.setItems(lista);
-    }
-
-    @FXML
     public void habilitarOpcionVerMapa() {
         btnVisualizarMapa.setVisible(true);
     }
 
     @FXML
-    public void habilitarOpcionModificarDatos(EventoSismico eventoSeleccionado) {
+    public void mostrarOpcionModificarDatos(EventoSismico eventoSeleccionado) {
 
         Object[] magnitud = eventoSeleccionado.getMagnitud();
         String descripcion = (String) magnitud[0];
@@ -322,23 +305,47 @@ public class RegistrarRevisionFController {
         eventoSeleccionado.setAlcance( "descripcion",txtAlcance.getText());
         eventoSeleccionado.setOrigen( "descripcion", txtOrigen.getText());
     }
-
+/*
     @FXML
     private void onConfirmar() {
         cuController.validarDatos(eventoSeleccionado, 2);
         limpiarVista();
+        mostrarConfirmacionCambioEstado("Confirmado");
     }
 
+    //paso 15
     @FXML
     private void onRechazar() {
+        //paso 16
         cuController.validarDatos(eventoSeleccionado, 1);
         limpiarVista();
+        mostrarConfirmacionCambioEstado("Rechazado");
     }
 
     @FXML
     private void onDerivar() {
 //        cuController.derivarEvento(eventoSeleccionado, "Analista 1");
 //        limpiarVista();
+    }
+*/
+    @FXML
+    private void tomarOpcionCambioEstado(ActionEvent event) {
+        Button source = (Button) event.getSource();
+
+        if (source == btnConfirmar) {
+            //cuController.tomarOpcionRechazoEvento(eventoSeleccionado)
+            cuController.tomarOpcionCambioEstado(eventoSeleccionado, 2);
+            mostrarConfirmacionCambioEstado("Confirmado");
+            limpiarVista();
+        } else if (source == btnRechazar) {
+            cuController.tomarOpcionCambioEstado(eventoSeleccionado,1);
+            mostrarConfirmacionCambioEstado("Rechazado");
+            limpiarVista();
+            //cuController.opRegistrarRevision();
+        } else if (source == btnDerivar) {
+            cuController.tomarOpcionCambioEstado( eventoSeleccionado, 4);
+
+        }
     }
 
     private void limpiarVista() {
@@ -349,5 +356,23 @@ public class RegistrarRevisionFController {
         txtMagnitudNumero.clear();
         txtAlcance.clear();
         txtOrigen.clear();
+        imgSismograma.setVisible(false);
     }
-}
+
+    public void mostrarSismograma() {
+
+        String url = "https://c8.alamy.com/comp/2BG7AJH/frequency-seismograph-waves-seismogram-earthquake-graphs-seismic-wave-vector-set-illustration-of-vibration-seismometer-diagram-waveform-record-2BG7AJH.jpg";
+        Image imagen = new Image(url);
+        imgSismograma.setImage(imagen);
+        imgSismograma.setVisible(true);
+    }
+
+    public void mostrarConfirmacionCambioEstado(String estado) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Confirmación");
+            alert.setHeaderText(null);
+            alert.setContentText("El evento cambió exitosamente al estado: " + estado);
+            alert.showAndWait();
+        }
+    }
+
