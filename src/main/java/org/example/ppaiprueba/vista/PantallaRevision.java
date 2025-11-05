@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import org.example.ppaiprueba.modelo.Estado;
 
 public class PantallaRevision {
     @FXML private Button opRegistrarRevision;
@@ -248,7 +249,7 @@ public class PantallaRevision {
         }
 
 
-        listaEventos.setCellFactory(lv /*list view (lo que muestre en pantalla)*/-> new ListCell<Map<String, Object>>() {
+        listaEventos.setCellFactory(lv -> new ListCell<Map<String, Object>>() {
             @Override
             protected void updateItem(Map<String, Object> item, boolean empty) { //sube a la list view cada celda
                 super.updateItem(item, empty);
@@ -333,7 +334,7 @@ public class PantallaRevision {
     }
 */
     @FXML
-    private void tomarOpcionCambiarEstado(ActionEvent event) {
+    private void tomarOpcionCambioEstado(ActionEvent event) {
         Button source = (Button) event.getSource();
 
         if (source == btnConfirmar) {

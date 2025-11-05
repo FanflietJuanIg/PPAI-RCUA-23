@@ -1,7 +1,7 @@
 // ======================
 // Estado.java
 // ======================
-package org.example.ppaiprueba.state;
+package org.example.ppaiprueba.modelo;
 
 /**
  * Clase que representa el estado de un elemento del sistema,
@@ -51,7 +51,6 @@ public class Estado {
         return tipo.name().replace('_', ' ');
     }
 
-    /*
     public boolean esPendienteRevision() {
         return tipo == Tipo.PENDIENTE_REVISION;
     }
@@ -71,6 +70,4 @@ public class Estado {
     public boolean esAmbitoEventoSismico(){
         return ambito == Ambito.EVENTO_SISMICO;
     }
-    */
-
 }

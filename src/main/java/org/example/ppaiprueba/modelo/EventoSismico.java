@@ -136,13 +136,11 @@ public Object[][] buscarDatosSeriesTemp() {
         cambiosEstado.add(cambio);
         this.estadoActual = cambio.getEstado();
     }
-
     public void bloquearParaRevision(Estado estado, LocalDateTime fechaHoraActual){
         Empleado empleadoCambio = null;
         for (CambioEstado ce : cambiosEstado) {
             if (ce.esActual()) {
                 ce.setFechaHoraFin(fechaHoraActual);
-                empleadoCambio = ce.getResponsable();
                 break;
             }
         }

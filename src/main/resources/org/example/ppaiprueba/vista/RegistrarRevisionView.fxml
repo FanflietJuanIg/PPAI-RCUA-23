@@ -60,9 +60,9 @@
 
             <!-- Opciones de revisión -->
             <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
-                <Button text="Confirmar" onAction="#tomarOpcionCambiarEstado" fx:id="btnConfirmar" />
-                <Button text="Rechazar" onAction="#tomarOpcionCambiarEstado" fx:id="btnRechazar" />
-                <Button text="Derivar" onAction="#tomarOpcionCambiarEstado" fx:id="btnDerivar"/>
+                <Button text="Confirmar" onAction="#tomarOpcionCambioEstado" fx:id="btnConfirmar" />
+                <Button text="Rechazar" onAction="#tomarOpcionCambioEstado" fx:id="btnRechazar" />
+                <Button text="Derivar" onAction="#tomarOpcionCambioEstado" fx:id="btnDerivar"/>
             </HBox>
 
         </VBox>
