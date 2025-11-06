@@ -1,0 +1,31 @@
+@startuml diagrama de secuencia para el patron state de sismografos
+
+control GestorRevisionManual
+entity "seleccionado:EventoSismico" as seleccionado
+entity "seleccionado:CambioEstado" as cambioSeleccionado
+entity "enRevision:CambioEstado" as cambioEnRevision
+
+' Inicio del flujo principal
+GestorRevisionManual-> GestorRevisionManual: enRevision()
+GestorRevisionManual-> GestorRevisionManual: tomarFechaHoraActual()
+
+' Bloqueo del evento para revisión
+GestorRevisionManual-> seleccionado: bloquerParaRevision(fechaHoraActual:DateTime)
+
+seleccionado -> AutoConfirmado: bloquerParaRevision(fechaHoraActual:DateTime, seleccionado:EventoSismico)
+note over seleccionado, AutoConfirmado: Va al estado autoconfirmado por que se supone que es el estado actual antes de pasar el evento a "en revision"
+create EnRevision
+AutoConfirmado -> EnRevision: new(): EnRevision()
+
+' Actualización del cambio de estado anterior
+AutoConfirmado -> cambioSeleccionado: setFechaHoraFin(fechaHoraActual:DateTime)
+
+' Creación del nuevo cambio de estado
+create cambioEnRevision
+AutoConfirmado -> cambioEnRevision: new(fechaHoraActual:DateTime, estadoEnRevision:Estado)
+AutoConfirmado -> seleccionado: setEstadoActual(estadoEnRevision:Estado)
+note over AutoConfirmado, seleccionado: La razon de por que va de autoconfirmado a seleccionado es por que me copie de una solucion, nose si estara bien
+AutoConfirmado -> seleccionado: setCambioEstado(cambioEnRevision:CambioEstado)
+
+
+@enduml

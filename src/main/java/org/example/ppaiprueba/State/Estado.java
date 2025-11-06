@@ -7,23 +7,37 @@ import org.example.ppaiprueba.modelo.CambioEstado;
 import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * Clase que representa el estado de un elemento del sistema,
  * usando enums internos limitados para tipo y ámbito.
  */
+@Entity
+@Table(name = "Estado")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Estado {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEstado")
+    protected Integer id;
+    
+    @NotNull
+    @Column(name = "nombre", nullable = false, length = 100)
     protected String nombre;
+    
+    @Column(name = "ambito", length = 100)
+    protected String ambito;
 
 
+    // Constructor por defecto requerido por JPA
+    protected Estado() {}
+    
     public Estado(String nombre) {
         this.nombre = nombre;
-    }
-
-    protected Estado() {
     }
 
 
@@ -108,5 +122,26 @@ public abstract class Estado {
                 "Operacion Invalida en " + this.getClass().getSimpleName()
 
         );
+    }
+    
+    // Getters y Setters JPA
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    public String getAmbito() {
+        return ambito;
+    }
+    
+    public void setAmbito(String ambito) {
+        this.ambito = ambito;
     }
 }

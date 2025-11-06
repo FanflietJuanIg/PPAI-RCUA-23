@@ -3,28 +3,80 @@ package org.example.ppaiprueba.modelo;
 import org.example.ppaiprueba.State.AutoDetectado;
 import org.example.ppaiprueba.State.Estado;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+@Entity
+@Table(name = "EventoSismico")
 public class EventoSismico {
-    private MagnitudRichter magnitud;
-    private AlcanceSismo alcance;
-    private OrigenDeGeneracion origen;
-    private ClasificacionSismo clasificacion;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEventoSismico")
+    private Integer id;
+    
+    @Column(name = "fechaHoraFin")
+    private LocalDateTime fechaHoraFin;
+    
+    @NotNull
+    @Column(name = "fechaHoraOcurrencia", nullable = false)
     private LocalDateTime fechaHoraOcurrencia;
+    
+    @Column(name = "latitudEpicentro", precision = 10, scale = 6)
+    private BigDecimal latitudEpicentro;
+    
+    @Column(name = "longitudEpicentro", precision = 10, scale = 6) 
+    private BigDecimal longitudEpicentro;
+    
+    @Column(name = "latitudHipocentro", precision = 10, scale = 6)
+    private BigDecimal latitudHipocentro;
+    
+    @Column(name = "longitudHipocentro", precision = 10, scale = 6)
+    private BigDecimal longitudHipocentro;
+    
+    @Column(name = "valorMagnitud", precision = 4, scale = 2)
+    private BigDecimal valorMagnitud;
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEmpleadoAnalista", nullable = false)
+    private Empleado empleadoAnalista;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEstado", nullable = false)
     private Estado estadoActual;
-    private String latitudEpicentro;
-    private String longitudEpicentro;
-    private String latitudHipocentro;
-    private String longitudHipocentro;
-    private List<SerieTemporal> seriesTemporales;
-    //private Empleado empleado;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idAlcanceSismo", nullable = false)
+    private AlcanceSismo alcance;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idOrigenDeGeneracion", nullable = false)
+    private OrigenDeGeneracion origen;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idMagnitudRitcher", nullable = false)
+    private MagnitudRichter magnitud;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idClasificacionSismo", nullable = false)
+    private ClasificacionSismo clasificacion;
+    
+    @OneToMany(mappedBy = "eventoSismico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<SerieTemporal> seriesTemporales = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "eventoSismico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CambioEstado> cambiosEstado = new ArrayList<>();
 
+    // Constructor por defecto requerido por JPA
+    public EventoSismico() {}
+    
     public EventoSismico(MagnitudRichter magnitud, AlcanceSismo alcance, OrigenDeGeneracion origen, ClasificacionSismo clasificacion, LocalDateTime fechaHoraOcurrencia, Estado estadoInicial,
     String latitudEpicentro, String longitudEpicentro, String latitudHipocentro, String longitudHipocentro, List<SerieTemporal> seriesTemporales) {
         this.magnitud = magnitud;
@@ -33,16 +85,16 @@ public class EventoSismico {
         this.clasificacion = clasificacion;
         this.fechaHoraOcurrencia = fechaHoraOcurrencia;
         this.estadoActual = estadoInicial;
-        this.latitudEpicentro = latitudEpicentro;
-        this.longitudEpicentro = longitudEpicentro;
-        this.latitudHipocentro = latitudHipocentro;
-        this.longitudHipocentro = longitudHipocentro;
+        this.latitudEpicentro = latitudEpicentro != null ? new BigDecimal(latitudEpicentro) : null;
+        this.longitudEpicentro = longitudEpicentro != null ? new BigDecimal(longitudEpicentro) : null;
+        this.latitudHipocentro = latitudHipocentro != null ? new BigDecimal(latitudHipocentro) : null;
+        this.longitudHipocentro = longitudHipocentro != null ? new BigDecimal(longitudHipocentro) : null;
         this.seriesTemporales = new ArrayList<>(seriesTemporales);
     }
 
     public void setMagnitud(String descripcion, Double valor) {
         this.magnitud.setDescripcionMagnitud(descripcion);
-        this.magnitud.setNumero(valor);
+        this.magnitud.setNumero(java.math.BigDecimal.valueOf(valor));
     }
 
     public Object[] getMagnitud(){
@@ -70,25 +122,24 @@ public class EventoSismico {
         return origen.getNombre();
     }
 
-    public ClasificacionSismo.Nombre getClasificacion() {
+    public String getClasificacion() {
         return clasificacion.getNombre();
-
     }
 
     public String getLatitudEpicentro(){
-        return latitudEpicentro;
+        return latitudEpicentro != null ? latitudEpicentro.toString() : null;
     }
 
     public String getLongitudEpicentro(){
-        return  longitudEpicentro;
+        return longitudEpicentro != null ? longitudEpicentro.toString() : null;
     }
 
     public String getLatitudHipocentro(){
-        return  latitudHipocentro;
+        return latitudHipocentro != null ? latitudHipocentro.toString() : null;
     }
 
     public String getLongitudHipocentro(){
-        return  longitudHipocentro;
+        return longitudHipocentro != null ? longitudHipocentro.toString() : null;
     }
 
     public void setEstadoActual(Estado estadoActual){
@@ -156,5 +207,50 @@ public Object[][] buscarDatosSeriesTemp() {
 
     public void addCambioEstado(CambioEstado ca) {
         cambiosEstado.add(ca);
+    }
+    
+    // Getters y Setters JPA
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    public LocalDateTime getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+    
+    public void setFechaHoraFin(LocalDateTime fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
+    
+    public void setFechaHoraOcurrencia(LocalDateTime fechaHoraOcurrencia) {
+        this.fechaHoraOcurrencia = fechaHoraOcurrencia;
+    }
+    
+    public BigDecimal getValorMagnitud() {
+        return valorMagnitud;
+    }
+    
+    public void setValorMagnitud(BigDecimal valorMagnitud) {
+        this.valorMagnitud = valorMagnitud;
+    }
+    
+    public Empleado getEmpleadoAnalista() {
+        return empleadoAnalista;
+    }
+    
+    public void setEmpleadoAnalista(Empleado empleadoAnalista) {
+        this.empleadoAnalista = empleadoAnalista;
+    }
+    
+    public void setCambiosEstado(List<CambioEstado> cambiosEstado) {
+        this.cambiosEstado = cambiosEstado;
+    }
+    
+    public void setSeriesTemporales(List<SerieTemporal> seriesTemporales) {
+        this.seriesTemporales = seriesTemporales;
     }
 }

@@ -20,7 +20,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-import org.example.ppaiprueba.State.Estado;
 
 public class PantallaRevision {
     @FXML private Button opRegistrarRevision;
@@ -138,7 +137,7 @@ public class PantallaRevision {
                 new MagnitudRichter("Fuerte", 6.5),
                 new AlcanceSismo("Regional", "Alto impacto"),
                 new OrigenDeGeneracion("Tectónico", "Subducción de placas"),
-                new ClasificacionSismo(20.0, 500.0, ClasificacionSismo.Nombre.SUPERFICIAL),
+                new ClasificacionSismo(20.0, 500.0, "SUPERFICIAL"),
                 ahora.minusHours(2),
                 new AutoDetectado(),
                 "-33.4569",
@@ -152,7 +151,7 @@ public class PantallaRevision {
                 new MagnitudRichter("Moderado", 4.8),
                 new AlcanceSismo("Local", "Impacto moderado"),
                 new OrigenDeGeneracion("Volcánico", "Actividad magmática"),
-                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.INTERMEDIO),
+                new ClasificacionSismo(0, 20, "INTERMEDIO"),
                 ahora.minusHours(1),
                 new BloqueadoParaRevision(),
                 "-36.8529",
@@ -166,7 +165,7 @@ public class PantallaRevision {
                 new MagnitudRichter("Leve", 3.2),
                 new AlcanceSismo("Local", "Bajo impacto"),
                 new OrigenDeGeneracion("Tectónico", "Falla local"),
-                new ClasificacionSismo(0, 20, ClasificacionSismo.Nombre.PROFUNDO),
+                new ClasificacionSismo(0, 20, "PROFUNDO"),
                 ahora.minusMinutes(30),
                 new AutoDetectado(),
                 "-35.4270",

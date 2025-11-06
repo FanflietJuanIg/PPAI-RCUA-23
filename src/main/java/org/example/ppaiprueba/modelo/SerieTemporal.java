@@ -1,23 +1,58 @@
 package org.example.ppaiprueba.modelo;
 
+import org.example.ppaiprueba.State.Estado;
+
+import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+@Entity
+@Table(name = "SerieTemporal")
 public class SerieTemporal {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idSerieTemporal")
+    private Integer id;
+    
+    @Column(name = "condicionAlarma", columnDefinition = "TEXT")
     private String condicionAlarma;
+    
+    @Column(name = "fechaHoraInicioRegistroMuestras")
     private LocalDateTime fechaHoraInicioRegistroMuestras;
+    
+    @Column(name = "fechaHoraRegistro")
     private LocalDateTime fechaHoraRegistro;
-    private double frecuenciaMuestreo;
-    private List<MuestraSismica> muestraSismicas;
+    
+    @Column(name = "frecuenciaMuestreo", precision = 6, scale = 2)
+    private BigDecimal frecuenciaMuestreo;
+    
+    // Relaciones
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idSismografo", nullable = false)
     private Sismografo sismografo;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEstado", nullable = false)
+    private Estado estado;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEventoSismico", nullable = false)
+    private EventoSismico eventoSismico;
+    
+    @OneToMany(mappedBy = "serieTemporal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MuestraSismica> muestraSismicas = new ArrayList<>();
 
+    // Constructor por defecto requerido por JPA
+    public SerieTemporal() {}
+    
     public SerieTemporal(String condicionAlarma, LocalDateTime fechaHoraInicioRegistroMuestras, LocalDateTime fechaHoraRegistro, double frecuenciaMuestreo, List<MuestraSismica> muestraSismicas, Sismografo sismografo) {
         this.fechaHoraInicioRegistroMuestras = fechaHoraInicioRegistroMuestras;
         this.fechaHoraRegistro = fechaHoraRegistro;
         this.condicionAlarma = condicionAlarma;
-        this.frecuenciaMuestreo = frecuenciaMuestreo;
+        this.frecuenciaMuestreo = BigDecimal.valueOf(frecuenciaMuestreo);
         this.muestraSismicas = new ArrayList<>(muestraSismicas);
         this.sismografo = sismografo;
     }
@@ -43,5 +78,78 @@ public class SerieTemporal {
             System.out.println("DatosMuestras: " + datosMuestras[i]);
         }
         return datosMuestras;
+    }
+    
+    // Getters y Setters JPA
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
+    public String getCondicionAlarma() {
+        return condicionAlarma;
+    }
+    
+    public void setCondicionAlarma(String condicionAlarma) {
+        this.condicionAlarma = condicionAlarma;
+    }
+    
+    public LocalDateTime getFechaHoraInicioRegistroMuestras() {
+        return fechaHoraInicioRegistroMuestras;
+    }
+    
+    public void setFechaHoraInicioRegistroMuestras(LocalDateTime fechaHoraInicioRegistroMuestras) {
+        this.fechaHoraInicioRegistroMuestras = fechaHoraInicioRegistroMuestras;
+    }
+    
+    public LocalDateTime getFechaHoraRegistro() {
+        return fechaHoraRegistro;
+    }
+    
+    public void setFechaHoraRegistro(LocalDateTime fechaHoraRegistro) {
+        this.fechaHoraRegistro = fechaHoraRegistro;
+    }
+    
+    public BigDecimal getFrecuenciaMuestreo() {
+        return frecuenciaMuestreo;
+    }
+    
+    public void setFrecuenciaMuestreo(BigDecimal frecuenciaMuestreo) {
+        this.frecuenciaMuestreo = frecuenciaMuestreo;
+    }
+    
+    public Sismografo getSismografo() {
+        return sismografo;
+    }
+    
+    public void setSismografo(Sismografo sismografo) {
+        this.sismografo = sismografo;
+    }
+    
+    public Estado getEstado() {
+        return estado;
+    }
+    
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    
+    public EventoSismico getEventoSismico() {
+        return eventoSismico;
+    }
+    
+    public void setEventoSismico(EventoSismico eventoSismico) {
+        this.eventoSismico = eventoSismico;
+    }
+    
+    public List<MuestraSismica> getMuestraSismicas() {
+        return muestraSismicas;
+    }
+    
+    public void setMuestraSismicas(List<MuestraSismica> muestraSismicas) {
+        this.muestraSismicas = muestraSismicas;
     }
 }
