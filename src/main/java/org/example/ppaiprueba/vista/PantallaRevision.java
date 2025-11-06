@@ -1,6 +1,7 @@
 // RegistrarRevisionFController.java
 package org.example.ppaiprueba.vista;
 
+import jakarta.persistence.EntityManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -20,6 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import org.example.ppaiprueba.State.Estado;
+import org.example.ppaiprueba.persistance.Repository;
 
 public class PantallaRevision {
     @FXML private Button opRegistrarRevision;
@@ -185,14 +188,23 @@ public class PantallaRevision {
         Usuario usuario = new Usuario("jperez", "contraseña123", empleado);
         Sesion sesion = new Sesion(usuario);
 
-        // Inicializar el controlador con los datos
-        cuController = new GestorRevisionManual(eventosSismicos, sesion, this);
 
+        // Inicializar el controlador con los datos
+        cuController = new GestorRevisionManual(sesion, this);
+
+        guardarEnBD(eventosSismicos);
 
         // Ocultar secciones
         btnVisualizarMapa.setVisible(false);
         formularioEdicion.setVisible(false);
         opcionesRevision.setVisible(false);
+    }
+    public void guardarEnBD(List<EventoSismico> eventosSismicos) {
+        Repository<EventoSismico> repository = new Repository<>(EventoSismico.class);
+
+        for (EventoSismico e : eventosSismicos) {
+            repository.guardar(e);
+        }
     }
 
     private void habilitarPantalla(){

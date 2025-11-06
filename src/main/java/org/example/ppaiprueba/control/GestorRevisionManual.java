@@ -10,17 +10,24 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.example.ppaiprueba.modelo.Sesion;
 
+import org.example.ppaiprueba.persistance.Repository;
 import org.example.ppaiprueba.vista.PantallaRevision;
 
 public class GestorRevisionManual {
-    private List<EventoSismico> eventosSismicos;
+    //private List<EventoSismico> eventosSismicos;
     private Sesion sesion;
     private PantallaRevision pantalla;
 
-    public GestorRevisionManual(List<EventoSismico> eventosSismicos, Sesion sesion, PantallaRevision pantalla){
-        this.eventosSismicos = eventosSismicos;
+    public GestorRevisionManual(Sesion sesion, PantallaRevision pantalla){
+        //this.eventosSismicos = eventosSismicos;
         this.sesion = sesion;
         this.pantalla = pantalla;
+    }
+
+    public List<EventoSismico> buscarEnBD () {
+        Repository<EventoSismico> eventoSismicoRepository = new Repository<>(EventoSismico.class);
+        List<EventoSismico> eventoSismicos = eventoSismicoRepository.listarTodos();
+        return eventoSismicos;
     }
 
     public void opRegistrarRevision(){
@@ -29,10 +36,12 @@ public class GestorRevisionManual {
 
     //Paso 6
     public void buscarEventosSismicos() {
-        // Agrega logging para debug
-        System.out.println("Total eventos: " + eventosSismicos.size());
+        List<EventoSismico> eventoSismicos = buscarEnBD();
 
-        List<EventoSismico> eventosPendientes = eventosSismicos.stream()
+        // Agrega logging para debug
+        System.out.println("Total eventos: " + eventoSismicos.size());
+
+        List<EventoSismico> eventosPendientes = eventoSismicos.stream()
                 .filter(evento -> evento.esAutodetectado())
                 .collect(Collectors.toList());
 // Alternativa A1
@@ -86,9 +95,13 @@ public class GestorRevisionManual {
         return sesion.getEmpleadoLogueado();
     }
 
+    public LocalDate obtenerFechaHoraActual() {
+        return LocalDate.now();
+    }
+
     public void rechazarEventoSismico(EventoSismico evento) {
         if (validarDatos(evento)) {
-            LocalDate fechaHoraActual = LocalDate.now();
+            LocalDate fechaHoraActual = obtenerFechaHoraActual();
             Empleado responsable = buscarEmpleadoLogueado();
             evento.rechazar(fechaHoraActual, responsable);
         }

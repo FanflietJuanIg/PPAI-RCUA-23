@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="eventos" transaction-type="RESOURCE_LOCAL">
+
+        <class>org.example.ppaiprueba.modelo.EventoSismico</class>
+        <class>org.example.ppaiprueba.modelo.AlcanceSismo</class>
+        <class>org.example.ppaiprueba.modelo.CambioEstado</class>
+        <class>org.example.ppaiprueba.modelo.ClasificacionSismo</class>
+        <class>org.example.ppaiprueba.modelo.DetalleMuestraSismica</class>
+        <class>org.example.ppaiprueba.modelo.Empleado</class>
+        <class>org.example.ppaiprueba.modelo.EstacionSismologica</class>
+        <class>org.example.ppaiprueba.modelo.MagnitudRichter</class>
+        <class>org.example.ppaiprueba.modelo.MuestraSismica</class>
+        <class>org.example.ppaiprueba.modelo.OrigenDeGeneracion</class>
+        <class>org.example.ppaiprueba.modelo.SerieTemporal</class>
+        <class>org.example.ppaiprueba.modelo.Sesion</class>
+        <class>org.example.ppaiprueba.modelo.Sismografo</class>
+        <class>org.example.ppaiprueba.modelo.TipoDeDato</class>
+        <class>org.example.ppaiprueba.modelo.Usuario</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:file:./data/eventos;AUTO_SERVER=TRUE"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+
+            <!-- Cambiar a 'update' si querés conservar datos -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>
