@@ -219,7 +219,7 @@ public class PantallaRevision {
         if (eventoSeleccionado != null) {
             //aca cambia el estado a enRevision
             //Paso 8
-            cuController.tomarEventoSeleccionado(eventoSeleccionado, 3);
+            cuController.tomarEventoSeleccionado(eventoSeleccionado);
         }
     }
 
@@ -333,17 +333,17 @@ public class PantallaRevision {
         Button source = (Button) event.getSource();
 
         if (source == btnConfirmar) {
-            //cuController.tomarOpcionRechazoEvento(eventoSeleccionado)
-            cuController.tomarOpcionCambioEstado(eventoSeleccionado, 2);
+            cuController.tomarOpcionCambioEstadoConfirmado(eventoSeleccionado);
             mostrarConfirmacionCambioEstado("Confirmado");
             limpiarVista();
+
         } else if (source == btnRechazar) {
-            cuController.tomarOpcionCambioEstado(eventoSeleccionado,1);
+            cuController.tomarOpcionCambioEstadoRechazado(eventoSeleccionado);
             mostrarConfirmacionCambioEstado("Rechazado");
             limpiarVista();
-            //cuController.opRegistrarRevision();
+
         } else if (source == btnDerivar) {
-            cuController.tomarOpcionCambioEstado( eventoSeleccionado, 4);
+            //cuController.tomarOpcionCambioEstado( eventoSeleccionado);
 
         }
     }

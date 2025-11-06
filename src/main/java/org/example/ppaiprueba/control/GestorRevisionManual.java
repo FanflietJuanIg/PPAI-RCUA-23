@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.example.ppaiprueba.modelo.Sesion;
 
-import org.example.ppaiprueba.State.Estado;
 import org.example.ppaiprueba.vista.PantallaRevision;
 
 public class GestorRevisionManual {
@@ -34,8 +33,7 @@ public class GestorRevisionManual {
         System.out.println("Total eventos: " + eventosSismicos.size());
 
         List<EventoSismico> eventosPendientes = eventosSismicos.stream()
-                .filter(evento -> evento.esAutodetectado() ||
-                                evento.esPendienteRevision())
+                .filter(evento -> evento.esAutodetectado())
                 .collect(Collectors.toList());
 // Alternativa A1
         if (eventosPendientes.isEmpty()) {
@@ -65,97 +63,43 @@ public class GestorRevisionManual {
         pantalla.mostrarEventosSismicos(eventosOrdenados);
     }
 
-    public void tomarEventoSeleccionado(EventoSismico evento, double num){
-        tomarFechaHoraActual(evento, num);
+    public void tomarEventoSeleccionado(EventoSismico evento){
+        bloquearEventoParaRevision(evento);
     }
 
-    public void tomarOpcionCambioEstado(EventoSismico evento, double num){
-        validarDatos(evento, num);
-
+    public void tomarOpcionCambioEstadoRechazado(EventoSismico evento){
+        rechazarEventoSismico(evento);
     }
 
-// Paso 8 y paso 17
-public void tomarFechaHoraActual(EventoSismico evento, double num) {
-    LocalDate fechaHoraActual = LocalDate.now();
-
-    switch ((int) num) {
-        case 1:
-            rechazarEventoSismico(evento, fechaHoraActual);
-            break;
-        case 2:
-            confirmarEventoSismico(evento, fechaHoraActual);
-            break;
-        case 3:
-            bloquearEventoParaRevision(evento, fechaHoraActual);
-            break;
-    }
-}
-
-/*
-    public void buscarEstadoRechazado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
-        Estado rechazado = null;
-        for (Estado estado : estados) {
-            if (estado.esAmbitoEventoSismico() && estado.esRechazado()) {
-                rechazado = estado;
-                break;
-            }
-        }
-        buscarEmpleadoLogeado(evento, fechaHoraActual, rechazado);
+    public void tomarOpcionCambioEstadoConfirmado(EventoSismico evento) {
+        confirmarEventoSismico(evento);
     }
 
-    public void buscarEstadoEnRevision(EventoSismico evento, LocalDateTime fechaHoraActual){
-        Estado enRevision = null;
-        for (Estado estado : estados){
-            if (estado.esAmbitoEventoSismico() && estado.esEnRevision()){
-                enRevision = estado;
-                break;
-            }
-        }
-        bloquearEventoParaRevision(enRevision, evento, fechaHoraActual);
+    public void bloquearEventoParaRevision(EventoSismico evento) {
+        LocalDate fechaHoraActual = LocalDate.now();
+        evento.bloquearParaRevision(fechaHoraActual);
+        //Paso 9
+        buscarDatosSismicos(evento);
     }
-
-    public void buscarEstadoConfirmado(EventoSismico evento ,LocalDateTime fechaHoraActual) {
-        Estado confirmado = null;
-        for (Estado estado : estados) {
-            if (estado.esAmbitoEventoSismico() && estado.esConfirmado()) {
-                confirmado = estado;
-                break;
-            }
-        }
-        buscarEmpleadoLogeado(evento, fechaHoraActual, confirmado);
-    }
-*/
-
-    public void bloquearEventoParaRevision(EventoSismico evento, LocalDate fechaHoraActual){
-            evento.bloquearParaRevision(fechaHoraActual);
-            //Paso 9
-            buscarDatosSismicos(evento);
-    }
-/*
-    public void buscarEmpleadoLogeado(EventoSismico evento, LocalDate fechaHoraActual ,Estado estado){
-        Empleado empleadoLogueado = sesion.getEmpleadoLogueado();
-
-        if (estado.esRechazado()) {
-            rechazarEventoSismico(estado, empleadoLogueado, evento, fechaHoraActual);
-        }
-        else if (estado.esConfirmado()) {
-            confirmarEventoSismico(estado, empleadoLogueado, evento, fechaHoraActual);
-        }
-    }
-    */
 
     public Empleado buscarEmpleadoLogueado() {
         return sesion.getEmpleadoLogueado();
     }
 
-    public void rechazarEventoSismico(EventoSismico evento, LocalDate fechaHoraActual) {
-        Empleado responsable = buscarEmpleadoLogueado();
-        evento.rechazar(fechaHoraActual, responsable);
+    public void rechazarEventoSismico(EventoSismico evento) {
+        if (validarDatos(evento)) {
+            LocalDate fechaHoraActual = LocalDate.now();
+            Empleado responsable = buscarEmpleadoLogueado();
+            evento.rechazar(fechaHoraActual, responsable);
+        }
     }
 
-    public void confirmarEventoSismico(EventoSismico evento, LocalDate fechaHoraActual) {
-        Empleado responsable = buscarEmpleadoLogueado();
-        evento.confirmar(fechaHoraActual, responsable);
+    public void confirmarEventoSismico(EventoSismico evento) {
+        if (validarDatos(evento)) {
+            LocalDate fechaHoraActual = LocalDate.now();
+            Empleado responsable = buscarEmpleadoLogueado();
+            evento.confirmar(fechaHoraActual, responsable);
+        }
     }
 
     public void buscarDatosSismicos (EventoSismico evento) {
@@ -193,11 +137,8 @@ public void tomarFechaHoraActual(EventoSismico evento, double num) {
     }
 
     //paso 16
-    public void validarDatos(EventoSismico evento, double num) {
-        if (evento.getMagnitud() != null && evento.getClasificacion() != null && evento.getOrigen() != null) {
-            tomarFechaHoraActual(evento, num);
-
-        }
+    public boolean validarDatos(EventoSismico evento) {
+        return (evento.getMagnitud() != null && evento.getClasificacion() != null && evento.getOrigen() != null);
     }
 
     private void llamarCUGenerarSismograma () {
