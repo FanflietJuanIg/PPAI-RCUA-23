@@ -44,27 +44,30 @@ public class EventoSismico {
     private BigDecimal valorMagnitud;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idEmpleadoAnalista", nullable = false)
     private Empleado empleadoAnalista;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
+
+
+     */
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idEstado", nullable = false)
     private Estado estadoActual;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idAlcanceSismo", nullable = false)
     private AlcanceSismo alcance;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idOrigenDeGeneracion", nullable = false)
     private OrigenDeGeneracion origen;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idMagnitudRitcher", nullable = false)
     private MagnitudRichter magnitud;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idClasificacionSismo", nullable = false)
     private ClasificacionSismo clasificacion;
     
@@ -237,7 +240,8 @@ public Object[][] buscarDatosSeriesTemp() {
     public void setValorMagnitud(BigDecimal valorMagnitud) {
         this.valorMagnitud = valorMagnitud;
     }
-    
+
+    /*
     public Empleado getEmpleadoAnalista() {
         return empleadoAnalista;
     }
@@ -245,11 +249,17 @@ public Object[][] buscarDatosSeriesTemp() {
     public void setEmpleadoAnalista(Empleado empleadoAnalista) {
         this.empleadoAnalista = empleadoAnalista;
     }
-    
+
+
+     */
     public void setCambiosEstado(List<CambioEstado> cambiosEstado) {
         this.cambiosEstado = cambiosEstado;
     }
-    
+
+    public List<SerieTemporal> getSeriesTemporales(){
+        return this.seriesTemporales;
+    }
+
     public void setSeriesTemporales(List<SerieTemporal> seriesTemporales) {
         this.seriesTemporales = seriesTemporales;
     }

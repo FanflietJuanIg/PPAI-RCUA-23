@@ -20,8 +20,8 @@ public class MuestraSismica {
     private LocalDateTime fechaHoraMuestra;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idSerieTemporal", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idSerieTemporal", nullable = true)
     private SerieTemporal serieTemporal;
     
     @OneToMany(mappedBy = "muestraSismica", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

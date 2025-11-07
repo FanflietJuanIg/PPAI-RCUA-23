@@ -22,15 +22,15 @@ public class CambioEstado {
     private LocalDateTime fechaHoraFin;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEstado", nullable = false)
     private Estado estado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEmpleado", nullable = false)
     private Empleado empleado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEventoSismico", nullable = false)
     private EventoSismico eventoSismico;
 

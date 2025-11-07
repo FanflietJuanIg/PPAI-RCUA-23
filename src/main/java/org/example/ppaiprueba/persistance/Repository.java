@@ -17,7 +17,7 @@ public class Repository<T> {
             EntityTransaction tx = em.getTransaction();
             try {
                 tx.begin();
-                em.persist(entidad);
+                em.merge(entidad);
                 tx.commit();
             } catch (Exception e) {
                 if (tx.isActive()) tx.rollback();

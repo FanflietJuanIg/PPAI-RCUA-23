@@ -21,7 +21,7 @@ public class Usuario {
     private String contrasena;
 
     // Relación con empleado
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEmpleado", nullable = false)
     private Empleado empleado;
 

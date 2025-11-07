@@ -30,15 +30,15 @@ public class SerieTemporal {
     private BigDecimal frecuenciaMuestreo;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idSismografo", nullable = false)
     private Sismografo sismografo;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEstado", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idEstado", nullable = true)
     private Estado estado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idEventoSismico", nullable = false)
     private EventoSismico eventoSismico;
     

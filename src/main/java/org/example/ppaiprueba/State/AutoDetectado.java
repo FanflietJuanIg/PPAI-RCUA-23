@@ -1,5 +1,7 @@
 package org.example.ppaiprueba.State;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.example.ppaiprueba.modelo.CambioEstado;
 import org.example.ppaiprueba.modelo.Empleado;
 import org.example.ppaiprueba.modelo.EventoSismico;
@@ -7,6 +9,8 @@ import org.example.ppaiprueba.modelo.EventoSismico;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "EstadoAutoDetectado")
 public class AutoDetectado extends Estado {
 
     public AutoDetectado() {

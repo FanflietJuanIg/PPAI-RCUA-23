@@ -21,11 +21,11 @@ public class Sismografo {
     private String nroSerie;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEstado", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idEstado", nullable = true)
     private Estado estado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEstacionSismologica", nullable = false)
     private EstacionSismologica estacionSismologica;
 

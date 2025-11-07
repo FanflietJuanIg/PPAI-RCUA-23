@@ -18,11 +18,11 @@ public class DetalleMuestraSismica {
     private BigDecimal valor;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idMuestraSismica", nullable = false)
     private MuestraSismica muestraSismica;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "idTipoDeDato", nullable = false)
     private TipoDeDato tipoDeDato;
 

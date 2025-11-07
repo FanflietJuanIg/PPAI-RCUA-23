@@ -19,11 +19,11 @@ public class Sesion {
     private LocalDateTime fechaHoraInicioCancelacion;
     
     // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario usuarioAutenticado;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "idEstacionSismologica")
     private EstacionSismologica estacionSismologica;
 
