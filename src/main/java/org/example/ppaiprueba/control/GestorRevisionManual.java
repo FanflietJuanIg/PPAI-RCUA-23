@@ -24,7 +24,7 @@ public class GestorRevisionManual {
         this.pantalla = pantalla;
     }
 
-    public List<EventoSismico> buscarEnBD () {
+    public List<EventoSismico> buscarEnBDeventos () {
         Repository<EventoSismico> eventoSismicoRepository = new Repository<>(EventoSismico.class);
         List<EventoSismico> eventoSismicos = eventoSismicoRepository.listarTodos();
         return eventoSismicos;
@@ -36,7 +36,7 @@ public class GestorRevisionManual {
 
     //Paso 6
     public void buscarEventosSismicos() {
-        List<EventoSismico> eventoSismicos = buscarEnBD();
+        List<EventoSismico> eventoSismicos = buscarEnBDeventos();
 
         // Agrega logging para debug
         System.out.println("Total eventos: " + eventoSismicos.size());
