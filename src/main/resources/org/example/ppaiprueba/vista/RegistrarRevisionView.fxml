@@ -8,42 +8,81 @@
             fx:controller="org.example.ppaiprueba.vista.PantallaRevision"
             fitToWidth="true"
             fitToHeight="true"
-            style="-fx-padding: 20">
+            style="-fx-padding: 20; -fx-background-color: #f5f5f5;">
 
     <content>
-        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 10">
+        <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 15;">
+
+            <!-- Título principal -->
+            <Label text="Revisión Manual de Eventos Sísmicos"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
 
             <!-- Botón principal -->
-            <Button fx:id="btnIniciarRevision" text="Registrar resultado de revisión manual" onAction="#opRegistrarRevision" />
+            <Button fx:id="opRegistrarRevision"
+                    text="Registrar resultado de revisión manual"
+                    onAction="#opRegistrarRevision"
+                    style="-fx-background-color: #2e86de; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 16; -fx-background-radius: 6;" />
 
-            <!-- Contenedor horizontal para lista y sismograma -->
+            <!-- Contenedor horizontal para lista e imagen -->
             <HBox spacing="20" alignment="TOP_CENTER">
-                <!-- Lista de eventos -->
 
-                <ListView fx:id="listaEventos" onMouseClicked="#tomarEventoSeleccionado" prefHeight="150" prefWidth="500"/>
+                <!-- Lista de eventos -->
+                <VBox spacing="8">
+                    <Label text="Eventos detectados"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                    <ListView fx:id="listaEventos"
+                              onMouseClicked="#tomarEventoSeleccionado"
+                              prefHeight="200"
+                              prefWidth="520"
+                              style="-fx-border-color: #ccc; -fx-border-radius: 6; -fx-background-radius: 6;" />
+                </VBox>
 
                 <!-- Imagen del sismograma -->
-                <ImageView fx:id="imgSismograma" fitWidth="300" preserveRatio="true" visible="false"/>
+                <VBox spacing="8" alignment="CENTER">
+                    <Label text="Sismograma"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #34495e;" />
+                    <ImageView fx:id="imgSismograma"
+                               fitWidth="300"
+                               preserveRatio="true"
+                               visible="false"
+                               style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);" />
+                </VBox>
             </HBox>
 
-            <!-- Botón para mapa -->
-            <Button fx:id="btnVisualizarMapa" text="Visualizar Mapa" onAction="#onVerMapa" visible="false" />
+            <!-- Botón de mapa -->
+            <Button fx:id="btnVisualizarMapa"
+                    text="Visualizar Mapa"
+                    onAction="#onVerMapa"
+                    visible="false"
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6;" />
 
-            <!-- Formulario de edición -->
-            <VBox fx:id="formularioEdicion" spacing="5" visible="false" maxWidth="600">
-                <Label text="Magnitud" />
-                <Label fx:id="lblMagnitudDescripcion" />
-                <TextField fx:id="txtMagnitudNumero" />
-                <Label text="Alcance" />
-                <TextField fx:id="txtAlcance" />
-                <Label text="Origen" />
-                <TextField fx:id="txtOrigen" />
-                <Button text="Guardar Edición" onAction="#onGuardarEdicion" />
-            </VBox>
+            <!-- Formulario de edición dentro de TitledPane -->
+            <TitledPane fx:id="formularioEdicion"
+                        text="Editar Evento Sísmico"
+                        expanded="false"
+                        visible="false"
+                        maxWidth="600"
+                        style="-fx-font-weight: bold; -fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 6;">
+                <content>
+                    <VBox spacing="8" style="-fx-padding: 10;">
+                        <Label text="Magnitud" />
+                        <Label fx:id="lblMagnitudDescripcion" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="txtMagnitudNumero" promptText="Ingrese valor numérico" />
+                        <Label text="Alcance" />
+                        <TextField fx:id="txtAlcance" promptText="Ingrese alcance" />
+                        <Label text="Origen" />
+                        <TextField fx:id="txtOrigen" promptText="Ingrese origen" />
+                        <Button text="Guardar Edición"
+                                onAction="#onGuardarEdicion"
+                                style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 6;" />
+                    </VBox>
+                </content>
+            </TitledPane>
 
-            <!-- Detalles del evento (PASO 9.1)-->
-            <VBox maxWidth="600">
-                <Label text="Detalles del Evento Seleccionado" style="-fx-font-weight: bold"/>
+            <!-- Detalles del evento -->
+            <VBox maxWidth="600" spacing="6">
+                <Label text="Detalles del Evento Seleccionado"
+                       style="-fx-font-weight: bold; -fx-font-size: 14px;" />
                 <HBox spacing="10">
                     <Label text="Clasificación:"/>
                     <Label fx:id="lblClasificacion"/>
@@ -58,11 +97,24 @@
                 </HBox>
             </VBox>
 
-            <!-- Opciones de revisión -->
-            <HBox fx:id="opcionesRevision" spacing="10" alignment="CENTER" visible="false">
-                <Button text="Confirmar" onAction="#tomarOpcionCambioEstado" fx:id="btnConfirmar" />
-                <Button text="Rechazar" onAction="#tomarOpcionCambioEstado" fx:id="btnRechazar" />
-                <Button text="Derivar" onAction="#tomarOpcionCambioEstado" fx:id="btnDerivar"/>
+            <!-- Botones de revisión -->
+            <HBox fx:id="opcionesRevision"
+                  spacing="10"
+                  alignment="CENTER"
+                  visible="false"
+                  style="-fx-padding: 10;">
+                <Button fx:id="btnConfirmar"
+                        text="Confirmar"
+                        onAction="#tomarOpcionCambioEstado"
+                        style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 6;" />
+                <Button fx:id="btnRechazar"
+                        text="Rechazar"
+                        onAction="#tomarOpcionCambioEstado"
+                        style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 6;" />
+                <Button fx:id="btnDerivar"
+                        text="Derivar"
+                        onAction="#tomarOpcionCambioEstado"
+                        style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 6;" />
             </HBox>
 
         </VBox>

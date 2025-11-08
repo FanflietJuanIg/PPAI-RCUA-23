@@ -30,7 +30,7 @@ public class PantallaRevision {
     @FXML private Button opRegistrarRevision;
     @FXML private ListView<Map<String,Object>> listaEventos;
     @FXML private Button btnVisualizarMapa;
-    @FXML private VBox formularioEdicion;
+    @FXML private TitledPane formularioEdicion;
     @FXML private HBox opcionesRevision;
     @FXML private TextField txtMagnitudNumero;
     @FXML private Label lblMagnitudDescripcion;
